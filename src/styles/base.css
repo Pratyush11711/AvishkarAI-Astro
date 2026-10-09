@@ -694,32 +694,13 @@ body::before{background:radial-gradient(60vw 50vh at 85% 10%,var(--faint),transp
 .okr circle{stroke:var(--band-line);stroke-width:1.5}
 .okr path{stroke:var(--acc);stroke-width:2.4;stroke-dasharray:30;stroke-dashoffset:30}
 .okr svg::before{content:none}
-.wiz.ok .dn-badge i.okr,.qf.ok .dn-badge i.okr{animation:none}
-.wiz.ok .okr circle,.qf.ok .okr circle{stroke:var(--acc);stroke-dasharray:117;stroke-dashoffset:117;animation:okRing .9s var(--x) .1s forwards}
-.wiz.ok .okr path,.qf.ok .okr path{animation:okd2 .6s var(--x) .7s forwards}
+.wiz.ok .dn-badge i.okr{animation:none}
+.wiz.ok .okr circle{stroke:var(--acc);stroke-dasharray:117;stroke-dashoffset:117;animation:okRing .9s var(--x) .1s forwards}
+.wiz.ok .okr path{animation:okd2 .6s var(--x) .7s forwards}
 @keyframes okRing{to{stroke-dashoffset:0}}@keyframes okd2{to{stroke-dashoffset:0}}
 .dn-steps li.on>div>b::after{display:none}
 .dn-top{min-height:52px}
 
-/* question form */
-.qf{gap:14px}
-.qf .wq{margin:6px 0 4px;max-width:22ch}
-.fl.ta textarea{width:100%;min-height:118px;resize:vertical;padding:26px 18px 12px;border-radius:16px;border:1px solid var(--band-line);background:var(--pm-in,rgba(244,244,242,.04));color:var(--band-fg);font:300 16px/1.5 var(--f);outline:none;transition:border-color .4s}
-.fl.ta textarea:focus{border-color:var(--acc)}
-.fl.ta label{top:18px}
-.fl.ta textarea:focus+label,.fl.ta textarea:not(:placeholder-shown)+label{transform:translateY(-9px);font-size:11px;letter-spacing:.08em}
-.fl.ta.bad textarea{border-color:var(--acc)}
-.qf .wnav{flex-wrap:wrap;margin-top:6px}
-.qnote{font-size:13px;color:var(--band-mut);display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
-.qnote .tl{font-size:13px;color:var(--band-fg)}
-.qdraft{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 2px;padding:11px 14px;border-radius:14px;border:1px solid color-mix(in srgb,var(--acc) 35%,var(--band-line));background:color-mix(in srgb,var(--acc) 8%,transparent);font-size:13px;line-height:1.45;color:var(--band-fg)}
-.qdraft[hidden]{display:none}
-.qdraft button{flex:none;border:0;background:none;padding:0;font:inherit;font-size:12px;letter-spacing:.02em;color:var(--band-mut);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.qdraft button:hover{color:var(--band-fg)}
-@media(max-width:560px){.qdraft{align-items:flex-start;flex-direction:column;gap:6px}}
-.qf .done{display:none}.qf.ok .done{display:block}
-.qf.ok>*:not(.done){display:none}
-.qf.ok .done .btn{display:inline-flex}
 
 /* footer logo: a tighter, more realistic contact shadow (set in the shader) */
 

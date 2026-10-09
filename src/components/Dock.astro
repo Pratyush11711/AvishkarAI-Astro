@@ -1,1 +1,7 @@
-<div class="dock glass" id="dock"><div class="dtx"><b>Free pilot on your own calls</b><div class="tick"><span>Scored in 5 business days</span><span>No integration needed</span><span>ISO 27001 certified</span><span>Free, no commitment</span></div></div><a class="btn sm" href="#contact" data-query data-label="Start pilot"></a><button class="dx" aria-label="Hide this bar"><svg viewBox="0 0 12 12"><path d="M2 2l8 8M10 2 2 10"/></svg></button></div>
+---
+interface Props {
+  pilotHref: string;
+}
+const { pilotHref } = Astro.props;
+---
+<div class="dock glass" id="dock"><div class="dtx"><b>Free pilot on your own calls</b><div class="tick"><span>Scored in 5 business days</span><span>No integration needed</span><span>ISO 27001 certified</span><span>Free, no commitment</span></div></div><a class="btn sm" href={pilotHref} data-label="Start pilot"></a><button class="dx" aria-label="Hide this bar"><svg viewBox="0 0 12 12"><path d="M2 2l8 8M10 2 2 10"/></svg></button></div>

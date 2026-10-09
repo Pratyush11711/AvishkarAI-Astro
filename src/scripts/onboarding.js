@@ -96,94 +96,35 @@ $$('form[data-wiz]').forEach(function(f){
 });
 
 /* ---------- popups ----------
-   Two dialogs share one controller: the pilot form (#pmodal) and the question form (#qmodal).
+   One controller drives the pilot dialog (#pmodal).
    Open and close are CSS transitions on two classes, with timers as the source of truth. */
 var root=document.documentElement,B=document.body,openM=null;
-function Modal(pm,closeSel,onOpen,onClose){
+function Modal(pm,closeSel,onOpen){
   if(!pm)return null;var card=$('.pm-card',pm),form=$('form',pm),opener=null,T=null,state='closed',RMq=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function clearAnims(){try{(card.getAnimations?card.getAnimations():[]).forEach(function(a){a.cancel()})}catch(e){}}
-  function focusFirst(){var resume=form._resumeFocus;form._resumeFocus=null;var i=resume||$('.wp.on .fl input:not([name$="_other"]),.qf .fl input',form);if(i&&!form.classList.contains('ok')&&matchMedia('(hover:hover)').matches)i.focus({preventScroll:true});else $('.pm-x',pm).focus({preventScroll:true})}
+  function focusFirst(){var i=$('.wp.on .fl input:not([name$="_other"])',form);if(i&&!form.classList.contains('ok')&&matchMedia('(hover:hover)').matches)i.focus({preventScroll:true});else $('.pm-x',pm).focus({preventScroll:true})}
   var m={pm:pm,form:form,card:card,
     open:function(from){if(openM&&openM!==m)openM.close(true);if(state==='open'||state==='opening')return;
       clearTimeout(T);clearAnims();opener=from||document.activeElement;B.classList.remove('mo');onOpen&&onOpen(m);
       pm.classList.remove('off','on');pm.hidden=false;root.classList.add('pm-lock');AV.paused=true;card.scrollTop=0;if(AV.clearCursor)AV.clearCursor();
       AV.twRest&&AV.twRest(pm);if(opener&&opener._twRest)opener._twRest();
       state='opening';openM=m;void card.offsetWidth;pm.classList.add('on');T=setTimeout(function(){state='open';focusFirst()},RMq?0:340)},
-    close:function(instant){if(state==='closed'||state==='closing')return;if(onClose)onClose(m);clearTimeout(T);clearAnims();state='closing';pm.classList.add('off');
+    close:function(instant){if(state==='closed'||state==='closing')return;clearTimeout(T);clearAnims();state='closing';pm.classList.add('off');
       T=setTimeout(function(){pm.classList.remove('on','off');pm.hidden=true;state='closed';AV.twRest&&AV.twRest(pm);if(openM===m){openM=null;root.classList.remove('pm-lock');AV.paused=false;if(!instant&&opener&&opener.focus)opener.focus({preventScroll:true})}},(RMq||instant)?0:240)},
     isOpen:function(){return state==='open'||state==='opening'}};
   $$(closeSel,pm).forEach(function(x){x.addEventListener('click',function(){m.close()})});
   return m}
 
 var pilotM=Modal($('#pmodal'),'[data-pclose]',function(m){if(m.form.classList.contains('ok'))m.form._reset();m.form._fit&&m.form._fit()});
-var queryM=Modal($('#qmodal'),'[data-qclose]',function(m){if(m.form.classList.contains('ok'))m.form._reset();else if(m.form._restore)m.form._restore()},function(m){if(m.form._save)m.form._save()});
-AV.openPilot=pilotM&&pilotM.open;AV.closePilot=pilotM&&pilotM.close;AV.openQuery=queryM&&queryM.open;
+AV.openPilot=pilotM&&pilotM.open;AV.closePilot=pilotM&&pilotM.close;
 var PILOT=/(^#start$|^#form$|(?:^|\/)pilot(?:\.html)?#form$)/;
-function isPilot(a){if(a.hasAttribute('data-query'))return false;if(a.hasAttribute('data-pilot'))return true;var h=a.getAttribute('href')||'';if(PILOT.test(h))return true;return a.classList.contains('btn')&&/(?:^|\/)pilot(?:\.html)?$/.test(h)}
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href],button[data-pilot],button[data-query]');if(!a)return;
-  if(a.hasAttribute('data-query')&&queryM){e.preventDefault();queryM.open(a);return}
+function isPilot(a){if(a.hasAttribute('data-pilot'))return true;var h=a.getAttribute('href')||'';if(PILOT.test(h))return true;return a.classList.contains('btn')&&/(?:^|\/)pilot(?:\.html)?$/.test(h)}
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href],button[data-pilot]');if(!a)return;
   if(pilotM&&isPilot(a)){if(pilotM.pm.contains(a))return;e.preventDefault();pilotM.open(a)}},true);
 addEventListener('keydown',function(e){if(!openM||!openM.isOpen())return;var card=openM.card;
   if(e.key==='Escape'){e.stopPropagation();openM.close();return}
   if(e.key==='Tab'){var f=$$('button:not([disabled]),input:not([name="company_website"]),textarea,select,a[href]',card).filter(function(x){return x.offsetParent!==null});if(!f.length)return;var a=f[0],z=f[f.length-1];
     if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}},true);
-/* deep links: /pilot#form opens the pilot form, any page #contact opens the question form */
-AV.ready(function(){setTimeout(function(){if(/^#(form|start)$/.test(location.hash)&&/\/pilot(?:\.html)?\/?$/.test(location.pathname)&&pilotM)pilotM.open(null);else if(location.hash==='#contact'&&queryM)queryM.open(null)},300)});
-
-/* ---------- question form ----------
-   Unfinished answers stay in this browser as a draft, so a later visit can continue. */
-(function(){var f=$('#qform');if(!f)return;var err=$('.err',f),banner=$('[data-qdraft]',f);
-  var KEY='avishkar.query.draft',MAX_AGE=30*24*60*60*1000;
-  var TOPICS=['Pricing','Security and data','Integrations','Languages','Partnership','Something else'];
-  var dockTitle=$('#dock .dtx b'),dockBtn=$('#dock a.btn[data-query]');
-  var titleRest=dockTitle?dockTitle.textContent:'',labelRest=dockBtn?(dockBtn.getAttribute('data-label')||'Start pilot'):'Start pilot',dockOn=null,dirty=false;
-  function val(n){var e=$$('[name="'+n+'"]',f);if(!e.length)return '';if(e[0].type==='radio')return (e.filter(function(x){return x.checked})[0]||{}).value||'';return e[0].value.trim()}
-  function mark(el,bad){el.classList.toggle('bad',bad);return !bad}
-  function clip(v,n){return typeof v==='string'?v.slice(0,n):''}
-  function blank(d){return !(d&&(d.name||d.email||d.company||d.topic||d.message||d.consent))}
-  function read(){try{var raw=localStorage.getItem(KEY);if(!raw)return null;var d=JSON.parse(raw);if(!d||typeof d!=='object')return null;
-    if(!d.savedAt||Date.now()-d.savedAt>MAX_AGE){localStorage.removeItem(KEY);return null}
-    return {name:clip(d.name,120),email:clip(d.email,160),company:clip(d.company,160),topic:TOPICS.indexOf(d.topic)>=0?d.topic:'',message:clip(d.message,1500),consent:d.consent===true}}catch(e){return null}}
-  function snap(){return {name:val('name'),email:val('email'),company:val('company'),topic:val('topic'),message:val('message'),consent:!!$('[name="consent"]',f).checked,savedAt:Date.now()}}
-  function paintDock(){var on=!blank(read());if(on===dockOn)return;dockOn=on;
-    if(dockTitle)dockTitle.textContent=on?'Continue where you left off':titleRest;
-    if(dockBtn&&AV.relabel){AV.relabel(dockBtn,on?'Continue':labelRest);if(on)dockBtn.setAttribute('aria-label','Continue where you left off')}}
-  /* A fresh page load has an empty form. Writing that would erase a draft the user has not reopened yet. */
-  function save(){if(f.classList.contains('ok'))return;if(!dirty&&!(queryM&&queryM.isOpen()))return;var d=snap();try{if(blank(d))localStorage.removeItem(KEY);else localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}paintDock()}
-  function put(name,value){var els=$$('[name="'+name+'"]',f);if(!els.length)return;
-    if(els[0].type==='radio')els.forEach(function(el){el.checked=el.value===value});
-    else if(els[0].type==='checkbox')els[0].checked=!!value;else els[0].value=value||''}
-  function resumeAt(){if(val('name').length<2)return $('[name="name"]',f);if(!EMAIL.test(val('email')))return $('[name="email"]',f);if(!val('topic'))return $('[name="topic"]',f);if(val('message').length<5)return $('[name="message"]',f);if(!$('[name="consent"]',f).checked)return $('[name="consent"]',f);return $('button[type="submit"]',f)}
-  function showDraft(on){if(banner)banner.hidden=!on}
-  function drop(){try{localStorage.removeItem(KEY)}catch(e){}dirty=false;dockOn=null;paintDock();showDraft(false)}
-  f._save=save;
-  f._restore=function(){var d=read();if(blank(d)){showDraft(false);f._resumeFocus=null;paintDock();return}
-    put('name',d.name);put('email',d.email);put('company',d.company);put('topic',d.topic);put('message',d.message);put('consent',d.consent);
-    showDraft(true);f._resumeFocus=resumeAt();paintDock()};
-  f.addEventListener('input',function(e){var p=e.target.parentNode;if(p&&p.classList.contains('fl'))p.classList.remove('bad');dirty=true;save()});
-  f.addEventListener('change',function(e){var g=e.target.closest('.opts,.agree');if(g){g.classList.remove('bad');err.textContent=''}dirty=true;save()});
-  var clearBtn=banner&&$('[data-qclear]',banner);if(clearBtn)clearBtn.addEventListener('click',function(){f.reset();$$('.bad',f).forEach(function(x){x.classList.remove('bad')});err.textContent='';drop()});
-  f._reset=function(){f.reset();f.classList.remove('ok');$$('.bad',f).forEach(function(x){x.classList.remove('bad')});err.textContent='';showDraft(false)};
-  addEventListener('pagehide',save);
-  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')save()});
-  var sending=false,sub=$('button[type="submit"]',f);
-  f.addEventListener('submit',function(e){e.preventDefault();if(sending)return;
-    var ok=[mark($('[name="name"]',f).parentNode,val('name').length<2),mark($('[name="email"]',f).parentNode,!EMAIL.test(val('email'))),mark($('[name="message"]',f).parentNode,val('message').length<5)].every(Boolean);
-    if(!ok){err.textContent='Add your name, a work email and your question.';return}
-    if(!mark($('.agree',f),!$('[name="consent"]',f).checked)){err.textContent='Please confirm so we can reply to you.';return}
-    var data={type:'question',name:val('name'),email:val('email'),company:val('company'),topic:val('topic'),message:val('message'),consent:true,page:location.pathname,sentAt:new Date().toISOString()};
-    var hp=$('[name="company_website"]',f);
-    var payload={formType:'question',name:data.name,email:data.email,company:data.company,topic:data.topic,question:data.message,consent:true,company_website:hp?hp.value:''};
-    sending=true;err.textContent='';busy(sub,true);
-    postForm(payload).then(function(){sending=false;busy(sub,false);finish(data)},function(x){sending=false;busy(sub,false);err.textContent=x&&x.shown&&x.message?x.message:FAIL});
-  });
-  function finish(data){
-    var ep=f.getAttribute('data-endpoint');if(ep){try{fetch(ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){})}catch(x){}}
-    if(typeof AV.onQuery==='function')AV.onQuery(data);
-    drop();
-    var first=data.name.split(/\s+/)[0];$('.dn-h',f).textContent='Thank you, '+first+'.';
-    $('[data-q-sub]',f).textContent='Our team will reply to '+data.email+' with an answer.';
-    f.classList.add('ok');$('.done',f).focus({preventScroll:true});var sc=$('.qf-scroll',f);if(sc)sc.scrollTop=0;f.closest('.pm-card').scrollTop=0}
-  paintDock();
-})();
+/* deep link: /pilot#form opens the pilot form */
+AV.ready(function(){setTimeout(function(){if(/^#(form|start)$/.test(location.hash)&&/\/pilot(?:\.html)?\/?$/.test(location.pathname)&&pilotM)pilotM.open(null)},300)});
 })();
