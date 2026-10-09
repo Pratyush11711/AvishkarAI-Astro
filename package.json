@@ -1,0 +1,20 @@
+{
+  "name": "avishkar-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^11.0.13",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "7.3.8",
+    "resend": "^6.32.1",
+    "tailwindcss": "4.3.3",
+    "three": "0.128.0"
+  }
+}

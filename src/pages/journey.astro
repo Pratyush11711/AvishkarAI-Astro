@@ -1,0 +1,73 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import BandCta from '../components/BandCta.astro';
+import '../styles/pages.css';
+---
+<Layout
+  page="journey"
+  title="About Avishkar AI · Our journey and founders"
+  description="From AI agents on 30,000+ ATMs and 68,000+ telecom towers to every contact centre call. Meet the founders of Avishkar AI, Shivang Kumar and Arpit Sharma."
+  keywords="Avishkar AI, Anjaneyaai Technologies, applied AI India, Shivang Kumar, Arpit Sharma, AI for operations"
+>
+<section class="jh">
+  <canvas id="jp" aria-hidden="true"></canvas>
+  <div class="wrap pg-hero hl">
+    <div class="crumb fx"><a href="/">Home</a><span>/</span><span class="text-fg!">Journey</span></div>
+    <h1 class="d1"><span class="ln"><span style="--i:0">Built on</span></span><span class="ln"><span style="--i:1">the ground.</span></span><span class="ln"><span class="o" style="--i:2">Now, every call.</span></span></h1>
+    <p class="lead fx" style="--d:.7s">Avishkar AI builds applied AI for operations that cannot afford downtime. This is how we got from ATM networks to contact centres.</p>
+  </div>
+</section>
+
+<section class="sec pt-[clamp(40px,6vw,90px)]!">
+  <div class="wrap"><p class="scrubp" id="scrubp">We started where a missed signal costs the most. Machines in the field, towers on the network, and now the voices of your customers.</p></div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap chap" id="chap">
+    <div class="chap-l">
+      <div><Eyebrow>Our journey</Eyebrow><h2 class="d2 mt-[18px]!">Five <span class="gr">chapters.</span></h2></div>
+      <div class="chap-n" id="chapN"></div>
+      <div class="chap-prog" id="chapP"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="chap-r">
+      <div class="ch"><span class="lab">Chapter 01 · Infrastructure first</span><h3>Where downtime costs the most.</h3><p>We began with critical infrastructure. Our AI agents run across ATM networks and telecom towers, where every minute of failure has a price.</p><div class="stat2"><div><b data-count="30000" data-suf="+">0</b><span>ATMs</span></div><div><b data-count="68000" data-suf="+">0</b><span>telecom towers</span></div></div></div>
+      <div class="ch"><span class="lab">Chapter 02 · Proof in production</span><h3>Half the time to repair.</h3><p>On the ATM network, our AI agents cut mean time to repair from 90 minutes to 45. Applied AI, measured in the field.</p><div class="stat2"><div><b>90<small>min</small><em>→</em>45<small>min</small></b><span>mean time to repair</span></div></div></div>
+      <div class="ch"><span class="lab">Chapter 03 · Trust by design</span><h3>Security teams say yes.</h3><p>Avishkar AI is ISO 27001 certified. We deploy in our cloud, your private cloud or fully on-premises.</p><div class="stat2"><div><b>ISO 27001</b><span>certified</span></div></div></div>
+      <div class="ch"><span class="lab">Chapter 04 · Every call</span><h3>From machines to conversations.</h3><p>We took the same discipline into contact centres. Verdicta scores agent quality. Veritune reads customer signal. Together they cover every call.</p><div class="stat2"><div><b data-count="1" data-suf="M+">0</b><span>call minutes analysed</span></div><div><b data-count="5" data-suf="+">0</b><span>enterprise contact centres</span></div></div></div>
+      <div class="ch"><span class="lab">Chapter 05 · What comes next</span><h3>Every language, every call.</h3><p>Our aim is simple. No conversation goes unheard, in any language your customers speak.</p><div class="stat2"><div><b data-count="7">0</b><span>languages today</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!" id="founders">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>Founders</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">The people</span></span><span class="ln"><span class="gr" style="--i:1">behind the signal.</span></span></h2></div>
+    <div class="founders">
+      <article class="fd a up"><span class="glow"></span><div class="av"><img src="assets/img/team/shivang-kumar.jpg" alt="Shivang Kumar, co-founder of Avishkar AI" width="400" height="400" loading="lazy"></div><div class="fd-id"><h3>Shivang<br>Kumar</h3></div><div class="fq"><span class="fq-k">On the problem</span><blockquote>“We built AI for ATMs and towers because nobody can watch every machine. Contact centres had the same gap with people. Thousands of calls a day, and QA hears two in a hundred.”</blockquote></div><div class="role"><span class="lab">Co-founder</span><a class="btn sm gh" href="https://www.linkedin.com/in/shivng/" target="_blank" rel="noopener" data-label="LinkedIn"></a></div></article>
+      <article class="fd b up" style="--d:.12s"><span class="glow"></span><div class="av"><img src="assets/img/team/arpit-sharma.jpg" alt="Arpit Sharma, co-founder of Avishkar AI" width="400" height="400" loading="lazy"></div><div class="fd-id"><h3>Arpit<br>Sharma</h3></div><div class="fq"><span class="fq-k">On the vision</span><blockquote>“QA teams should spend their day coaching, not hunting for the one call that went wrong. Give them every call, already scored, and they get back to the work that moves the score.”</blockquote></div><div class="role"><span class="lab">Co-founder</span><a class="btn sm gh" href="https://www.linkedin.com/in/arpitsharmawriting/" target="_blank" rel="noopener" data-label="LinkedIn"></a></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>How we work</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">How we</span></span><span class="ln"><span class="gr" style="--i:1">build.</span></span></h2></div>
+    <div class="princ">
+      <div class="up"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></span><h3>Applied, not theoretical</h3><p>We ship AI that runs in production and is judged by results.</p></div>
+      <div class="up" style="--d:.08s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.2 3.2 7.8 7.5 9 4.3-1.2 7.5-4.8 7.5-9V6z"/></svg></span><h3>Security first</h3><p>Customer data stays where you decide it lives.</p></div>
+      <div class="up" style="--d:.16s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></span><h3>Proof before promises</h3><p>A free pilot on your own calls, before you commit.</p></div>
+      <div class="up" style="--d:.24s"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span><h3>Every language</h3><p>Built for how your customers really speak.</p></div>
+    </div>
+  </div>
+</section>
+<BandCta />
+
+<Fragment slot="scripts">
+<script>
+  import '../scripts/core.js';
+  import '../scripts/onboarding.js';
+  import '../scripts/pages.js';
+</script>
+</Fragment>
+</Layout>

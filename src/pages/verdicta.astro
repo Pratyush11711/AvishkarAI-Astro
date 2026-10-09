@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import BandCta from '../components/BandCta.astro';
+import '../styles/pages.css';
+---
+<Layout
+  page="verdicta"
+  title="Verdicta · Automated call QA and agent scoring | Avishkar AI"
+  description="Verdicta applies your own QA scorecard to every recorded call: 20+ parameters, fatal flags, dead air and hold rules, AI summaries and coaching heat maps."
+  keywords="automated call QA, call auditing software, agent scoring, QA scorecard automation, call centre quality assurance, fatal error detection"
+>
+<section class="wrap ph hl">
+  <div>
+    <div class="crumb fx"><a href="/">Home</a><span>/</span><span>Products</span><span>/</span><span class="text-fg!">Verdicta</span></div>
+    <h1 class="d1"><span class="ln"><span style="--i:0">Verdicta</span></span></h1>
+    <p class="tagline fx" style="--d:.4s">Agent quality, scored on every single call.</p>
+    <p class="lead fx" style="--d:.55s">Verdicta applies your own QA scorecard to 100% of recorded calls. Your analysts stop sampling and start coaching.</p>
+    <div class="ctas fx" style="--d:.7s"><a class="btn" href="/pilot" data-label="Start a free pilot" data-mag></a><a class="tl" href="/veritune">See Veritune<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
+  </div>
+  <div class="artwrap fx" style="--d:.3s">
+    <div class="artcard" data-liq data-art="verdicta"><div class="art"></div></div>
+    <div class="chip glass ach1 floaty" style="--n:0"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Call 00142</span><span class="pill f">Fatal</span></div><small class="mt-[8px]!">Required disclosure missed</small></div>
+    <div class="chip glass ach2 floaty" style="--n:1;animation-delay:-2s"><div class="ch-h"><span>QA score</span><span class="pill">This week</span></div><div class="ch-b"><b>83%</b><div class="spark" data-spark></div></div></div>
+    <div class="chip glass ach3 floaty" style="--n:2;animation-delay:-4s"><div class="ch-h"><span>Script adherence</span><span class="pill">Pass</span></div><div class="prog"><i style="--w:92%"></i></div></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="nums up">
+    <div><b data-count="20" data-suf="+">0</b><span>parameters and sub-parameters per call</span></div>
+    <div><b data-count="100" data-suf="%">0</b><span>of recorded calls scored</span></div>
+    <div><b>5<small>s</small></b><span>dead air rule, scored automatically</span></div>
+    <div><b>60<small>s</small></b><span>hold rule, scored automatically</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>What it checks</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">Your scorecard.</span></span><span class="ln"><span class="gr" style="--i:1">Every call.</span></span></h2></div>
+    <div class="feat">
+      <div class="fcard up"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><h3>Matches your QA form</h3><p>20+ parameters and sub-parameters, set up the way your team already scores.</p></div>
+      <div class="fcard up" style="--d:.08s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span><h3>Fatal and non-fatal</h3><p>Weightage you set, so a missed disclosure counts more than a long hold.</p></div>
+      <div class="fcard up" style="--d:.16s"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Automatic rules</h3><p>Dead air over 5 seconds or hold over 60 seconds, scored with no listening.</p></div>
+      <div class="fcard up" style="--d:.24s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><h3>Script and handling</h3><p>Script adherence, escalation, call handling, resolution and summarisation.</p></div>
+      <div class="fcard up"><span class="ico"><svg viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM16 3l-4 4-4-4"/></svg></span><h3>CRM tagging check</h3><p>Confirms agents updated the record after every call.</p></div>
+      <div class="fcard up" style="--d:.08s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg></span><h3>AI call summaries</h3><p>Final disposition and action items for every call.</p></div>
+      <div class="fcard up" style="--d:.16s"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><h3>Heat maps</h3><p>See which parameters fail most, by agent, team, call or campaign.</p></div>
+      <div class="fcard up" style="--d:.24s"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg></span><h3>Playback and metadata</h3><p>Listen in the app, with full call metadata alongside the score.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>Coaching heat map</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">Know who to coach.</span></span><span class="ln"><span class="gr" style="--i:1">And on what.</span></span></h2></div>
+    <div class="heatbig up"><div class="hb-top"><span class="lab">Failures by parameter · Illustrative</span><span class="legend">Fewer<s></s>More<i class="lgsw"></i>Fatal</span></div><div class="hb-grid" id="hb"></div></div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap vs" id="vsteps">
+    <div class="vs-l rv"><Eyebrow>How it works</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">Your form in.</span></span><span class="ln"><span class="gr" style="--i:1">Coaching out.</span></span></h2><div class="big" id="vsn">01</div></div>
+    <div class="vs-r"><i class="fillbar"></i>
+      <div class="vstep"><span class="lab">Step 01</span><h3>Send us your QA form</h3><p>We set up your parameters, fatal rules and weightage exactly the way your team scores today.</p></div>
+      <div class="vstep"><span class="lab">Step 02</span><h3>Share your calls</h3><p>Start with a batch of recordings. Connect your dialer through our API when you roll out.</p></div>
+      <div class="vstep"><span class="lab">Step 03</span><h3>Every call gets scored</h3><p>Each call gets a score, fatal flags, a summary and next actions, in every language you serve.</p></div>
+      <div class="vstep"><span class="lab">Step 04</span><h3>Coach what matters</h3><p>Heat maps show which parameters fail most, so your coaching time goes where it moves the score.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap">
+    <div class="xlink">
+      <a class="xl up" href="/veritune"><div><Eyebrow>Pairs with</Eyebrow><p class="d3 mt-[14px]!">Add Veritune to see which customers are at risk</p></div><i><svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></i></a>
+      <a class="xl up" href="/pilot" style="--d:.1s"><div><Eyebrow>Next step</Eyebrow><p class="d3 mt-[14px]!">See it free on your own calls</p></div><i><svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></i></a>
+    </div>
+  </div>
+</section>
+<BandCta />
+
+<Fragment slot="scripts">
+<script>
+  import '../scripts/core.js';
+  import '../scripts/art.js';
+  import '../scripts/onboarding.js';
+  import '../scripts/pages.js';
+</script>
+</Fragment>
+</Layout>

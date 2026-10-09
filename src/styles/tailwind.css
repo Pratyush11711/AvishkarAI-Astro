@@ -1,0 +1,20 @@
+/* No Preflight: base.css carries the site's own reset. Utilities live in a cascade layer, so the
+   unlayered site styles win over them unless a utility uses the important (!) modifier. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "../pages";
+@source "../components";
+@source "../layouts";
+/* .ring is a class on the pair-section SVG circle, not a Tailwind ring. The other words appear in
+   copy and scripts but are never class names. */
+@source not inline("{ring,relative,block,grid,filter}");
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-mut: var(--mut);
+  --color-acc: var(--acc);
+  --font-sans: var(--f);
+  --font-weight-normal: 400;
+}

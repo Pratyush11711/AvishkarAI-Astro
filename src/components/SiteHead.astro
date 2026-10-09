@@ -1,0 +1,47 @@
+---
+import { SITE } from '../data/site.js';
+import { schemaGraph } from '../data/schema.js';
+
+interface Props {
+  page: string;
+  title: string;
+  description: string;
+  keywords?: string;
+}
+const { page, title, description, keywords } = Astro.props;
+const url = `${SITE}/${page === 'index' ? '' : page}`;
+const ogImage = `${SITE}/assets/img/og.jpg`;
+---
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{title}</title>
+<meta name="description" content={description}>
+{keywords && <meta name="keywords" content={keywords}>}
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href={url}>
+<meta name="author" content="Avishkar AI">
+<meta name="theme-color" content="#F4F4F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Avishkar AI">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content={url}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Avishkar AI. Every agent, scored. Every customer, heard. AI quality assurance for 100% of contact centre calls.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImage}>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/poppins-200.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json" set:html={JSON.stringify(schemaGraph(page))}></script>
+<script is:inline>(function(){var t='light';try{t=localStorage.getItem('av-theme')||'light'}catch(e){}document.documentElement.setAttribute('data-theme',t)})();</script>

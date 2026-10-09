@@ -1,0 +1,15 @@
+---
+interface Props {
+  current: string;
+  pilotHref: string;
+}
+const { current, pilotHref } = Astro.props;
+const NAV = [
+  ['index', '/', 'Home'],
+  ['verdicta', '/verdicta', 'Verdicta'],
+  ['veritune', '/veritune', 'Veritune'],
+  ['journey', '/journey', 'Journey'],
+  ['pilot', '/pilot', 'Pilot'],
+];
+---
+<header class="nav" id="nav"><div class="wrap nav-in"><a href="/" class="brand lock wait" id="brand" aria-label="Avishkar AI home"><svg class="mk"><use href="#mk"/></svg><span class="wd">Avishkar AI<span class="tm">™</span></span></a><nav class="nav-mid glass" aria-label="Primary">{NAV.map(([key, href, label]) => <a href={href} class={current === key ? 'cur' : undefined} aria-current={current === key ? 'page' : undefined}>{label}</a>)}</nav><div class="nav-r"><button class="tog glass" data-tog aria-label="Switch light or dark theme"><svg viewBox="0 0 20 20"><mask id="mm1"><rect x="-10" y="-10" width="40" height="40" fill="#fff"/><circle class="moon" cx="10" cy="10" r="5.5" fill="#000"/></mask><circle class="sun" cx="10" cy="10" r="4.6" mask="url(#mm1)"/><g class="ray"><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.6 3.6 5 5M15 15l1.4 1.4M3.6 16.4 5 15M15 5l1.4-1.4"/></g></svg></button><a class="btn sm" href={pilotHref} data-label="Start a free pilot" data-mag></a><button class="ham glass" id="ham" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button></div></div></header><nav class="menu" id="menu" aria-label="Mobile">{NAV.map(([key, href, label], i) => <a href={href} class={current === key ? 'cur' : undefined}>{label}<small>{'0' + (i + 1)}</small></a>)}<div class="mfoot"><a class="btn" href={pilotHref} data-label="Start a free pilot"></a><button class="tog glass" data-tog aria-label="Switch light or dark theme"><svg viewBox="0 0 20 20"><mask id="mm2"><rect x="-10" y="-10" width="40" height="40" fill="#fff"/><circle class="moon" cx="10" cy="10" r="5.5" fill="#000"/></mask><circle class="sun" cx="10" cy="10" r="4.6" mask="url(#mm2)"/><g class="ray"><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.6 3.6 5 5M15 15l1.4 1.4M3.6 16.4 5 15M15 5l1.4-1.4"/></g></svg></button></div></nav>

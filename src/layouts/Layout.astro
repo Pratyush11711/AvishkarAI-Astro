@@ -1,0 +1,34 @@
+---
+import '../styles/tailwind.css';
+import '../styles/base.css';
+import SiteHead from '../components/SiteHead.astro';
+import SvgSprite from '../components/SvgSprite.astro';
+import Overlays from '../components/Overlays.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Dock from '../components/Dock.astro';
+import PilotModal from '../components/PilotModal.astro';
+import QueryModal from '../components/QueryModal.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+
+interface Props {
+  page: string;
+  title: string;
+  description: string;
+  keywords?: string;
+  mainClass?: string;
+}
+const { page, title, description, keywords, mainClass } = Astro.props;
+const pilotHref = page === 'index' ? '#start' : page === 'pilot' ? '#form' : '/pilot';
+const home = page === 'index' ? '' : '/';
+const gap = mainClass ? '' : '\n';
+---
+<html lang="en">
+<head>
+<SiteHead page={page} title={title} description={description} keywords={keywords} />
+</head>
+<body>
+<SvgSprite /><Overlays /><Header current={page} pilotHref={pilotHref} /><slot name="before-main" /><main class={mainClass}>{gap}<slot />{gap}</main>{gap}<slot name="after-main" />{gap}<Footer home={home} pilotHref={pilotHref} />{page !== 'pilot' && <Dock />}<PilotModal /><QueryModal /><CookieBanner />
+<slot name="scripts" />
+</body>
+</html>

@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import BandCta from '../components/BandCta.astro';
+import '../styles/pages.css';
+---
+<Layout
+  page="veritune"
+  title="Veritune · Churn risk and sentiment from every call | Avishkar AI"
+  description="Veritune reads the customer side of every call: tone and emotion, competitor mentions, churn risk with confidence, and the next best action for your retention team."
+  keywords="customer sentiment analysis, churn risk prediction, competitor mention tracking, voice of customer analytics, speech analytics, retention"
+>
+<section class="wrap ph hl">
+  <div>
+    <div class="crumb fx"><a href="/">Home</a><span>/</span><span>Products</span><span>/</span><span class="text-fg!">Veritune</span></div>
+    <h1 class="d1"><span class="ln"><span style="--i:0">Veritune</span></span></h1>
+    <p class="tagline fx" style="--d:.4s">Know which customers are leaving before they cancel.</p>
+    <p class="lead fx" style="--d:.55s">Veritune listens to the customer side of every call. It tracks tone, competitor mentions and churn risk, then tells your team what to do next.</p>
+    <div class="ctas fx" style="--d:.7s"><a class="btn" href="/pilot" data-label="Start a free pilot" data-mag></a><a class="tl" href="/verdicta">See Verdicta<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
+  </div>
+  <div class="artwrap fx" style="--d:.3s">
+    <div class="artcard" data-liq data-art="veritune"><div class="art"></div></div>
+    <div class="chip glass ach1 floaty" style="--n:0"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Churn risk</span><span class="pill w">High</span></div><div class="ch-b"><b>72%</b><small>Call 00287</small></div></div>
+    <div class="chip glass ach2 floaty" style="--n:1;animation-delay:-2s"><div class="ch-h"><span>Competitor named</span><span class="pill w">Flag</span></div><small class="mt-[8px]!">02:41 · mentioned twice</small></div>
+    <div class="chip glass ach3 floaty" style="--n:2;animation-delay:-4s"><div class="ch-h"><span>Next action</span><span class="pill f">24h</span></div><small class="mt-[8px]!">Retention follow-up</small></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="nums up">
+    <div><b data-count="100" data-suf="%">0</b><span>of customer conversations read</span></div>
+    <div><b data-count="7">0</b><span>languages, including code-switching</span></div>
+    <div><b data-count="4">0</b><span>customer signals read on every call</span></div>
+    <div><b>24<small>h</small></b><span>to act on every at-risk customer</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>What it reads</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">Four signals.</span></span><span class="ln"><span class="gr" style="--i:1">One decision.</span></span></h2></div>
+    <div class="rows">
+      <div class="rowf">
+        <div class="rf-t up"><span class="n">01 · Tone and emotion</span><h3>Hear the moment a call turns.</h3><p>Frustration, satisfaction and escalation, scored across the whole call and laid over the recording.</p></div>
+        <div class="rf-v up" style="--d:.1s"><span class="lab">Sentiment timeline · Illustrative</span><div class="emo2" id="emo2"></div><div class="emo-key"><span style="--c:var(--dim)">Neutral</span><span style="--c:color-mix(in srgb,var(--acc) 45%,transparent)">Concerned</span><span style="--c:var(--acc)">Frustrated</span></div></div>
+      </div>
+      <div class="rowf">
+        <div class="rf-t up"><span class="n">02 · Competitor mentions</span><h3>Know who they are comparing you to.</h3><p>Which competitor came up, in what context, and how often, across every call.</p></div>
+        <div class="rf-v up" style="--d:.1s"><span class="lab">Transcript excerpt · Illustrative</span><div class="quote">“Honestly, <mark>Competitor A</mark> offered me a better plan last week.”<small>02:41 · Customer · Flagged</small></div><div class="cbar mt-[6px]!"><div>Competitor A<s style="--w:.86"></s>41</div><div>Competitor B<s style="--w:.52"></s>25</div><div>Competitor C<s style="--w:.3"></s>14</div></div></div>
+      </div>
+      <div class="rowf">
+        <div class="rf-t up"><span class="n">03 · Churn risk</span><h3>A score you can act on.</h3><p>Each at-risk customer gets a churn risk score with a confidence level. You set the weightage of critical and non-critical flags.</p></div>
+        <div class="rf-v up" style="--d:.1s"><div class="riskg"><div class="gauge2"><b>72%</b></div><ul><li><i></i>Competitor mentioned twice</li><li><i></i>Asked about cancelling</li><li><i></i>Complaint left open</li></ul></div></div>
+      </div>
+      <div class="rowf">
+        <div class="rf-t up"><span class="n">04 · Next best action</span><h3>Every risk comes with a next step.</h3><p>Recommended actions for each at-risk customer, ready for your retention team.</p></div>
+        <div class="rf-v up" style="--d:.1s"><div class="actcard"><span>Recommended action</span><b>Retention follow-up within 24 hours</b></div><div><div class="actrow">Offer plan review<span class="pill">Suggested</span></div><div class="actrow">Close open complaint<span class="pill w">Priority</span></div><div class="actrow">Escalate to retention lead<span class="pill">Optional</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap">
+    <div class="head rv"><Eyebrow>Dashboards</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">See who to call</span></span><span class="ln"><span class="gr" style="--i:1">first.</span></span></h2><p class="lead">Churn-risk buckets, campaigns and team views. Illustrative figures.</p></div>
+    <div class="buckets">
+      <div class="bk up"><span class="lab">Low risk</span><b data-count="1842">0</b><div class="meter"><i style="--w:78%;--c:var(--dim)"></i></div></div>
+      <div class="bk up" style="--d:.1s"><span class="lab">Watch</span><b data-count="436">0</b><div class="meter"><i style="--w:38%;--c:var(--fg)"></i></div></div>
+      <div class="bk hi up" style="--d:.2s"><span class="lab">High risk</span><b data-count="214" class="o">0</b><div class="meter"><i style="--w:22%;--c:var(--acc)"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pt-[0]!">
+  <div class="wrap">
+    <div class="xlink">
+      <a class="xl up" href="/verdicta"><div><Eyebrow>Pairs with</Eyebrow><p class="d3 mt-[14px]!">Add Verdicta to score every agent</p></div><i><svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></i></a>
+      <a class="xl up" href="/pilot" style="--d:.1s"><div><Eyebrow>Next step</Eyebrow><p class="d3 mt-[14px]!">See it free on your own calls</p></div><i><svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></i></a>
+    </div>
+  </div>
+</section>
+<BandCta />
+
+<Fragment slot="scripts">
+<script>
+  import '../scripts/core.js';
+  import '../scripts/art.js';
+  import '../scripts/onboarding.js';
+  import '../scripts/pages.js';
+</script>
+</Fragment>
+</Layout>

@@ -1,0 +1,375 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import '../styles/home.css';
+---
+<Layout
+  page="index"
+  title="Avishkar AI · AI call quality monitoring for 100% of calls"
+  description="Avishkar AI scores 100% of contact centre calls. Verdicta automates call QA and agent scoring, Veritune flags churn risk. Start a free pilot."
+  keywords="call quality monitoring, AI quality assurance, contact centre QA, speech analytics, conversation intelligence, call scoring software, churn prediction, agent coaching, BPO quality audit, India"
+>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="cord" aria-hidden="true"></canvas>
+  <div class="wrap hero-in hl" id="heroIn">
+    <Eyebrow class="fx" style="--d:.1s">Contact centre intelligence</Eyebrow>
+    <h1 class="d1"><span class="ln"><span style="--i:0">Every call,</span></span><span class="ln"><span class="gr" style="--i:1">finally heard.</span></span></h1>
+    <p class="lead fx" style="--d:.6s">Verdicta scores every agent. Veritune flags every customer about to leave. Both run on 100% of your calls, not the 2% your QA team has time for.</p>
+    <div class="ctas fx" style="--d:.75s">
+      <a class="btn" href="#start" data-label="Start a free pilot" data-mag></a>
+      <a class="tl" href="#pilot">See how it works</a>
+    </div>
+  </div>
+  <div class="cslot" id="cslot">
+    <div class="hchips" aria-hidden="true">
+      <div class="chip glass c1 floaty" style="--n:0"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Verdicta</span><span class="pill f">Fatal</span></div><div class="ch-b"><div><b id="hc1">83%</b><small>Call 00142 · QA score</small></div><div class="spark" id="spark"></div></div></div>
+      <div class="chip glass c2 floaty" style="--n:1;animation-delay:-2s"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Veritune</span><span class="pill w">Competitor named</span></div><div class="ch-b"><div><b id="hc2">72%</b><small>Churn risk · Call 00287</small></div></div></div>
+      <div class="chip glass c3 floaty" style="--n:2;animation-delay:-4s"><div class="ch-h"><span>Calls analysed today</span><span class="lab text-[9px]!">Live</span></div><div class="ch-b"><div><b id="hc3">12,480</b><small>Coverage 100%</small></div></div><div class="prog"><i style="--w:100%"></i></div></div>
+    </div>
+  </div>
+  <div class="wrap"><div class="hero-ft fx" style="--d:1s">
+    <div class="trust"><span><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.2 3.2 7.8 7.5 9 4.3-1.2 7.5-4.8 7.5-9V6z"/></svg>ISO 27001 certified</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>7 languages</span><span><svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 1 1 .8-8.9A6 6 0 0 1 19 11a3.5 3.5 0 0 1-.5 7z"/></svg>Cloud or on-prem</span><span><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>No integration to start</span></div></div></div>
+</section>
+
+<!-- GAP -->
+<section class="gap" id="gap">
+  <div class="gap-st">
+    <div class="wrap gap-in">
+      <div>
+        <Eyebrow>The sampling gap</Eyebrow>
+        <div class="gap-num"><span id="gapN">3</span><small>%</small></div>
+        <div class="gap-sw"><h2 class="d3 sA">Your QA team <mark class="hlw">only</mark> hears 1 to 5% of your calls.</h2><h2 class="d3 sB">Hear <span class="o">every single one</span> with Avishkar AI.</h2></div>
+      </div>
+      <div>
+        <canvas id="dots" aria-label="A grid of 100 dots. Three are lit at first, then every dot lights up as you scroll." role="img"></canvas>
+        <div class="gap-cap"><span class="lab">One dot, one call in a hundred</span><span class="lab" id="gapL">Sampled</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="sec" id="products">
+  <div class="wrap">
+    <div class="head rv">
+      <Eyebrow>Products</Eyebrow>
+      <h2 class="d2"><span class="ln"><span style="--i:0">Two products.</span></span><span class="ln"><span class="gr" style="--i:1">One dashboard.</span></span></h2>
+    </div>
+    <div class="pgrid">
+      <div class="pcol">
+        <article class="card up" data-liq id="c-verdicta" data-p="verdicta" tabindex="0" role="button" aria-label="Open Verdicta details" data-cursor="Open">
+          <div class="art"></div><span class="num">01</span>
+          <div class="card-meta"><div><Eyebrow as="span">Agent quality</Eyebrow><h3>Verdicta</h3></div><span class="opn"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg></span></div>
+        </article>
+        <div class="pnote up">
+          <p class="d4">Your own scorecard, applied to every call.</p>
+          <div class="chipset"><span class="pill">20+ parameters</span><span class="pill">Fatal flags</span><span class="pill">AI summaries</span></div>
+          <div class="row"><a class="tl" href="/verdicta">Explore Verdicta<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a><button class="more" data-open="verdicta">Quick view<i><svg viewBox="0 0 14 14"><path d="M7 2v10M2 7h10"/></svg></i></button></div>
+        </div>
+      </div>
+      <div class="pcol">
+        <div class="pnote up" style="--d:.15s">
+          <p class="d4">Churn risk and competitor mentions, flagged before customers leave.</p>
+          <div class="chipset"><span class="pill">Tone</span><span class="pill w">Churn risk</span><span class="pill">Next action</span></div>
+          <div class="row"><a class="tl" href="/veritune">Explore Veritune<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a><button class="more" data-open="veritune">Quick view<i><svg viewBox="0 0 14 14"><path d="M7 2v10M2 7h10"/></svg></i></button></div>
+        </div>
+        <article class="card up" data-liq id="c-veritune" data-p="veritune" tabindex="0" role="button" aria-label="Open Veritune details" data-cursor="Open" style="--d:.15s">
+          <div class="art"></div><span class="num">02</span>
+          <div class="card-meta"><div><Eyebrow as="span">Customer signal</Eyebrow><h3>Veritune</h3></div><span class="opn"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg></span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIDE -->
+<section class="sec pt-[0]!" id="inside">
+  <div class="wrap">
+    <div class="head rv">
+      <Eyebrow>Inside the product</Eyebrow>
+      <h2 class="d2"><span class="ln"><span style="--i:0">Every call,</span></span><span class="ln"><span class="gr" style="--i:1">scored and explained.</span></span></h2>
+      <div class="tabs" role="tablist" aria-label="Product view"><span class="tk" id="tk"></span><button role="tab" aria-selected="true" data-v="v1">Verdicta</button><button role="tab" aria-selected="false" data-v="v2">Veritune</button></div>
+    </div>
+    <div class="mock-st">
+      <div class="mock" id="mock" data-cur="v1">
+        <div class="mk-top"><span class="dts"><i></i><i></i><i></i></span><span class="url"><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="mkLoc"><b>Verdicta</b><em>/</em>Dashboard</span></span><span>Illustrative view</span></div>
+        <div class="mk-shot" aria-hidden="true"><img class="v1 l" src="assets/img/mock/v1-l.webp" alt="" loading="lazy" decoding="async" width="2168" height="1192"><img class="v1 d" src="assets/img/mock/v1-d.webp" alt="" loading="lazy" decoding="async" width="2168" height="1192"><img class="v2 l" src="assets/img/mock/v2-l.webp" alt="" loading="lazy" decoding="async" width="2168" height="1122"><img class="v2 d" src="assets/img/mock/v2-d.webp" alt="" loading="lazy" decoding="async" width="2168" height="1122"></div>
+        <div class="mk-body">
+          <aside class="mk-side"><span class="lock"><svg class="mk"><use href="#mk"/></svg><span class="wd">Avishkar AI</span></span><nav class="mk-nav"><a class="on" data-sv="v1" role="button" tabindex="0"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/></svg><span>Dashboard</span></a><a class="" data-sv="v3" role="button" tabindex="0"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5.8" rx="7" ry="2.6"/><path d="M5 5.8v12.4c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V5.8M5 12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6"/></svg><span>Campaigns</span></a><a class="" data-sv="v2" role="button" tabindex="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.4 12.2 2.5 2.5 4.8-5"/></svg><span>Analyze results</span></a><a class="" data-sv="v4" role="button" tabindex="0"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5c.7-3 2.9-4.8 5.5-4.8s4.8 1.8 5.5 4.8M15.6 5.6a3 3 0 0 1 0 5.8M17.2 14.5c1.7.6 2.9 2.2 3.3 4.6"/></svg><span>User management</span></a><a class="" data-sv="v5" role="button" tabindex="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></nav><a class="mk-out"><svg viewBox="0 0 24 24"><path d="M9.5 20.5H6a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h3.5M15.5 16.5 20 12l-4.5-4.5M20 12H9.5"/></svg><span>Logout</span></a></aside>
+          <div class="mk-main">
+            <div class="view" id="v1"><div class="vh"><div class="vh-t"><h4>Dashboard</h4><span class="pill">Verdicta</span></div><div class="vh-r"><span class="vchip">This week</span><span class="vbtn"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Export</span></div></div>
+              <div class="kpis"><div class="kpi"><span>Calls analysed</span><b>12,480</b></div><div class="kpi"><span>Average score</span><b>83%</b></div><div class="kpi"><span>Fatal flags</span><b class="o">41</b></div><div class="kpi"><span>Coaching due</span><b>17</b></div></div>
+              <div class="mk-row">
+                <div class="pane">
+                  <div class="pane-h">Call 00142 <small>04:32 · Agent R. Mehta</small></div>
+                  <div class="wave" id="wave1"><span class="ph"></span></div>
+                  <div class="sc">
+                    <div>Script adherence<span class="pill">Pass</span></div>
+                    <div>Required disclosure<span class="pill f">Fatal</span></div>
+                    <div>Dead air under 5 seconds<span class="pill">Pass</span></div>
+                    <div>Hold under 60 seconds<span class="pill">Pass</span></div>
+                    <div>CRM tagging<span class="pill">Pass</span></div>
+                  </div>
+                </div>
+                <div class="pane">
+                  <div class="pane-h">Overall achievement <small>This week</small></div>
+                  <div class="gauge"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" cx="50" cy="50" r="44" pathLength="100" data-v="17"/></svg><b>83<small>%</small></b></div>
+                  <div class="pane-h m-[6px_0_0]!">Failures by parameter <small>Agents</small></div>
+                  <div class="heat" id="heat"></div>
+                </div>
+              </div>
+            </div>
+            <div class="view" id="v2" hidden><div class="vh"><div class="vh-t"><h4>Analyze results</h4><span class="pill w">Veritune</span></div><div class="vh-r"><span class="vchip">Last 7 days</span><span class="vbtn"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Export</span></div></div>
+              <div class="kpis"><div class="kpi"><span>At-risk customers</span><b class="o">214</b></div><div class="kpi"><span>Competitor mentions</span><b>96</b></div><div class="kpi"><span>Calls escalated</span><b>38</b></div><div class="kpi"><span>Follow-ups due</span><b>58</b></div></div>
+              <div class="mk-row">
+                <div class="pane">
+                  <div class="pane-h">Call 00287 <small>06:11 · Customer sentiment</small></div>
+                  <div class="wave" id="wave2"><span class="ph"></span></div>
+                  <div class="emo"><div class="n" style="--w:36%"></div><div class="m" style="--w:22%"></div><div class="h" style="--w:calc(42% - 6px)"></div></div>
+                  <div class="emo-l"><span>Neutral</span><span>Concerned</span><span>Frustrated</span></div>
+                  <div class="sc">
+                    <div><span class="tm">00:42</span><span class="ev">Billing query raised</span><span class="pill">Neutral</span></div>
+                    <div><span class="tm">02:41</span><span class="ev">Competitor named</span><span class="pill w">Flag</span></div>
+                    <div><span class="tm">04:10</span><span class="ev">Asked about cancelling</span><span class="pill f">Critical</span></div>
+                    <div><span class="tm">05:32</span><span class="ev">Complaint left open</span><span class="pill w">Flag</span></div>
+                  </div>
+                </div>
+                <div class="pane">
+                  <div class="pane-h">Churn risk <small>Confidence high</small></div>
+                  <div class="gauge"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr o" cx="50" cy="50" r="44" pathLength="100" data-v="28"/></svg><b>72<small>%</small></b></div>
+                  <div class="act"><span>Recommended action</span>Retention follow-up within 24 hours</div>
+                  <div class="cbar"><div>Competitor A<s style="--w:.86"></s>41</div><div>Competitor B<s style="--w:.52"></s>25</div><div>Competitor C<s style="--w:.3"></s>14</div></div>
+                </div>
+              </div>
+            </div><div class="view" id="v3" hidden><div class="vh"><div class="vh-t"><h4>Campaigns</h4><span class="pill">Verdicta + Veritune</span></div><div class="vh-r"><div class="seg" data-seg><button type="button" class="on" data-f="all">All</button><button type="button" data-f="live">Live</button><button type="button" data-f="paused">Paused</button></div><span class="vbtn dk"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New campaign</span></div></div><div class="kpis"><div class="kpi"><span>Live campaigns</span><b>5</b></div><div class="kpi"><span>Calls scored</span><b>11,534</b></div><div class="kpi"><span>Average QA score</span><b>81%</b></div><div class="kpi"><span>High-risk customers</span><b class="o">214</b></div></div><div class="pane tbl camp"><div class="tr th"><span>Campaign</span><span>Languages</span><span>Calls</span><span>QA score</span><span>Churn risk</span><span>Status</span></div><div class="tr st" data-st="live"><span class="cn"><i style="--c:var(--fg)"></i><span><b>Card activation</b><small>Inbound · Banking</small></span></span><span class="lg2">EN · ES</span><span class="num">3,214</span><span class="sbar"><s style="--w:0.88"></s><em>88%</em></span><span><span class="pill">Low</span></span><span><span class="stt on">Live</span></span></div><div class="tr st" data-st="live"><span class="cn"><i style="--c:var(--acc)"></i><span><b>Billing support</b><small>Inbound · Telecom</small></span></span><span class="lg2">EN</span><span class="num">2,870</span><span class="sbar"><s style="--w:0.79"></s><em>79%</em></span><span><span class="pill">Watch</span></span><span><span class="stt on">Live</span></span></div><div class="tr st" data-st="live"><span class="cn"><i style="--c:var(--fg)"></i><span><b>Retention desk</b><small>Outbound · Telecom</small></span></span><span class="lg2">EN · AR</span><span class="num">1,962</span><span class="sbar"><s style="--w:0.91"></s><em>91%</em></span><span><span class="pill f">High</span></span><span><span class="stt on">Live</span></span></div><div class="tr st" data-st="live"><span class="cn"><i style="--c:var(--mut)"></i><span><b>Collections</b><small>Outbound · Banking</small></span></span><span class="lg2">ES</span><span class="num">1,408</span><span class="sbar"><s style="--w:0.72"></s><em>72%</em></span><span><span class="pill">Watch</span></span><span><span class="stt on">Live</span></span></div><div class="tr st" data-st="paused"><span class="cn"><i style="--c:var(--mut)"></i><span><b>New customer onboarding</b><small>Outbound · Insurance</small></span></span><span class="lg2">PT</span><span class="num">1,126</span><span class="sbar"><s style="--w:0.86"></s><em>86%</em></span><span><span class="pill">Low</span></span><span><span class="stt">Paused</span></span></div><div class="tr st" data-st="live"><span class="cn"><i style="--c:var(--acc)"></i><span><b>Escalations</b><small>Inbound · E-commerce</small></span></span><span class="lg2">EN · ZH</span><span class="num">954</span><span class="sbar"><s style="--w:0.68"></s><em>68%</em></span><span><span class="pill f">High</span></span><span><span class="stt on">Live</span></span></div></div></div><div class="view" id="v4" hidden><div class="vh"><div class="vh-t"><h4>User management</h4><span class="pill">Workspace</span></div><div class="vh-r"><span class="vsearch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>Search people</span><span class="vbtn dk"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Invite user</span></div></div><div class="mk-row"><div class="pane tbl users"><div class="tr th"><span>Name</span><span>Role</span><span>Team</span><span>Last active</span></div><div class="tr st"><span class="un"><i class="av o">PN</i><span><b>Priya Nair</b><small>QA lead</small></span></span><span><span class="pill f">Superadmin</span></span><span class="tm2">All teams</span><span class="tm2"><i class="sd on"></i>Online now</span></div><div class="tr st"><span class="un"><i class="av">RM</i><span><b>Rahul Mehta</b><small>Agent</small></span></span><span><span class="pill">Agent</span></span><span class="tm2">Card activation</span><span class="tm2"><i class="sd on"></i>2 min ago</span></div><div class="tr st"><span class="un"><i class="av">AI</i><span><b>Ananya Iyer</b><small>QA analyst</small></span></span><span><span class="pill">QA analyst</span></span><span class="tm2">Billing support</span><span class="tm2"><i class="sd on"></i>12 min ago</span></div><div class="tr st"><span class="un"><i class="av">DC</i><span><b>Daniel Costa</b><small>Team lead</small></span></span><span><span class="pill w">Team lead</span></span><span class="tm2">Retention desk</span><span class="tm2"><i class="sd"></i>1 hour ago</span></div><div class="tr st"><span class="un"><i class="av">FK</i><span><b>Fatima Khan</b><small>QA analyst</small></span></span><span><span class="pill">QA analyst</span></span><span class="tm2">Escalations</span><span class="tm2"><i class="sd"></i>Yesterday</span></div><div class="tr st"><span class="un"><i class="av">WC</i><span><b>Wei Chen</b><small>Agent</small></span></span><span><span class="pill">Agent</span></span><span class="tm2">Escalations</span><span class="tm2"><i class="sd"></i>Yesterday</span></div><div class="tr st"><span class="un"><i class="av">SM</i><span><b>Sofia Martín</b><small>Agent</small></span></span><span><span class="pill">Agent</span></span><span class="tm2">Collections</span><span class="tm2"><i class="sd"></i>2 days ago</span></div></div><div class="pane"><div class="pane-h">Roles and access <small>48 users</small></div><div class="roles2"><div class="rl st"><div><b>Superadmin</b><small>All data and settings</small></div><span class="rc">2</span><s style="--w:.06"></s></div><div class="rl st"><div><b>Team lead</b><small>Team calls and coaching</small></div><span class="rc">6</span><s style="--w:.14"></s></div><div class="rl st"><div><b>QA analyst</b><small>Scoring and calibration</small></div><span class="rc">8</span><s style="--w:.2"></s></div><div class="rl st"><div><b>Agent</b><small>Own calls and feedback</small></div><span class="rc">32</span><s style="--w:.68"></s></div></div><div class="pane-h m-[18px_0_6px]!">Security <small>Enforced</small></div><div class="tg st"><span>Single sign-on</span><button type="button" class="sw on" aria-pressed="true" aria-label="Single sign-on"><i></i></button></div><div class="tg st"><span>Two-factor for admins</span><button type="button" class="sw on" aria-pressed="true" aria-label="Two-factor for admins"><i></i></button></div><div class="tg st"><span>Mask card numbers in transcripts</span><button type="button" class="sw on" aria-pressed="true" aria-label="Mask card numbers in transcripts"><i></i></button></div></div></div></div><div class="view" id="v5" hidden><div class="vh"><div class="vh-t"><h4>Settings</h4><span class="pill">Scorecard</span></div><div class="vh-r"><span class="vsaved" aria-live="polite"></span><button type="button" class="vbtn dk" data-save>Save changes</button></div></div><div class="mk-row"><div class="pane"><div class="pane-h">QA scorecard <small>Weightage totals 100%</small></div><div class="prm th"><span>Parameter</span><span>Weight</span><span>Fatal</span></div><div class="prm st"><span class="pn2"><b>Greeting and ID check</b><small>Opening</small></span><span class="wgt"><s style="--w:0.3333333333333333"></s>10%</span><button type="button" class="sw" aria-pressed="false" aria-label="Fatal: Greeting and ID check"><i></i></button></div><div class="prm st"><span class="pn2"><b>Required disclosure</b><small>Compliance</small></span><span class="wgt"><s style="--w:0.6666666666666666"></s>20%</span><button type="button" class="sw on" aria-pressed="true" aria-label="Fatal: Required disclosure"><i></i></button></div><div class="prm st"><span class="pn2"><b>Script adherence</b><small>Process</small></span><span class="wgt"><s style="--w:0.5"></s>15%</span><button type="button" class="sw" aria-pressed="false" aria-label="Fatal: Script adherence"><i></i></button></div><div class="prm st"><span class="pn2"><b>Dead air under 5 seconds</b><small>Handling<em>Auto rule</em></small></span><span class="wgt"><s style="--w:0.3333333333333333"></s>10%</span><button type="button" class="sw" aria-pressed="false" aria-label="Fatal: Dead air under 5 seconds"><i></i></button></div><div class="prm st"><span class="pn2"><b>Hold under 60 seconds</b><small>Handling<em>Auto rule</em></small></span><span class="wgt"><s style="--w:0.3333333333333333"></s>10%</span><button type="button" class="sw" aria-pressed="false" aria-label="Fatal: Hold under 60 seconds"><i></i></button></div><div class="prm st"><span class="pn2"><b>Resolution</b><small>Outcome</small></span><span class="wgt"><s style="--w:0.6666666666666666"></s>20%</span><button type="button" class="sw" aria-pressed="false" aria-label="Fatal: Resolution"><i></i></button></div><div class="prm st"><span class="pn2"><b>CRM tagging</b><small>After call</small></span><span class="wgt"><s style="--w:0.5"></s>15%</span><button type="button" class="sw on" aria-pressed="true" aria-label="Fatal: CRM tagging"><i></i></button></div></div><div class="pane"><div class="pane-h">Languages <small data-lc>7 of 7 on</small></div><div class="lchips st"><button type="button" class="lchip on">English</button><button type="button" class="lchip on">Spanish</button><button type="button" class="lchip on">French</button><button type="button" class="lchip on">German</button><button type="button" class="lchip on">Portuguese</button><button type="button" class="lchip on">Arabic</button><button type="button" class="lchip on">Mandarin</button></div><div class="pane-h m-[18px_0_10px]!">Deployment <small>Where calls live</small></div><div class="seg wide st" data-seg><button type="button" class="on">Our cloud</button><button type="button">Private cloud</button><button type="button">On-prem</button></div><div class="pane-h m-[18px_0_6px]!">Alerts <small>Email and in-app</small></div><div class="tg st"><span>Fatal flags, instantly</span><button type="button" class="sw on" aria-pressed="true" aria-label="Fatal flags, instantly"><i></i></button></div><div class="tg st"><span>Daily churn-risk digest</span><button type="button" class="sw on" aria-pressed="true" aria-label="Daily churn-risk digest"><i></i></button></div><div class="tg st"><span>Weekly coaching report</span><button type="button" class="sw" aria-pressed="false" aria-label="Weekly coaching report"><i></i></button></div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIR -->
+<section class="pair" id="pair">
+  <div class="pair-st">
+    <div class="pair-top"><Eyebrow>Better together</Eyebrow></div>
+    <div class="wrap pair-g">
+      <div class="side" id="sideL"><Eyebrow as="span">Verdicta</Eyebrow><span class="big">Agents</span><p>How they performed.</p></div>
+      <svg class="orbs" viewBox="0 0 400 400" aria-hidden="true"><circle class="ring" id="ring" cx="200" cy="200" r="170"/><circle class="rp" cx="200" cy="200" r="100"/><circle class="rp" cx="200" cy="200" r="100"/><circle class="rp" cx="200" cy="200" r="100"/><g filter="url(#goo)"><circle class="o1" id="ob1" cx="90" cy="200" r="70"/><circle class="o2" id="ob2" cx="310" cy="200" r="70"/></g></svg>
+      <div class="side r" id="sideR"><Eyebrow as="span">Veritune</Eyebrow><span class="big">Customers</span><p>How they reacted.</p></div>
+    </div>
+    <div class="pair-out wrap"><p class="d3">One dashboard. <span class="gr">The full picture.</span></p><p class="lead mx-auto! text-center!">Same calls, scored for quality and read for risk.</p></div>
+  </div>
+</section>
+
+<div class="mq" aria-hidden="true"><div class="mq-t" id="mq"></div></div>
+
+<!-- LANG -->
+<section class="sec lang" id="lang">
+  <div class="wrap lang-g">
+    <div class="rv">
+      <Eyebrow>Multilingual</Eyebrow>
+      <h2 class="d2 mt-[20px]!"><span class="ln"><span style="--i:0">Fluent in</span></span><span class="ln"><span class="gr" style="--i:1">your customers.</span></span></h2>
+      <div class="tcard up" id="tcard" aria-live="polite">
+        <div class="tc-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Live call<em>·</em><b id="tcN">00418</b></span><span class="tc-l" id="tcL">English</span></div>
+        <p class="tc-q" id="tcQ">I was charged twice this month.</p>
+        <div class="tc-e"><span>Read in English</span><p id="tcE">Duplicate charge on this month's bill.</p></div>
+        <div class="tc-f"><span class="pill w" id="tcS">Frustrated</span><span class="tc-m">Same scorecard<i></i>Mid-call switching</span></div>
+      </div>
+    </div>
+    <div class="up flagrow">
+      <div class="wheel" aria-hidden="true"><div class="wheel-t" id="wheel"></div></div>
+      <div class="flags" id="flags" role="tablist" aria-label="Languages"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="sec pt-[0]!" id="proof">
+  <div class="wrap">
+    <div class="head rv">
+      <Eyebrow>In production</Eyebrow>
+      <h2 class="d2"><span class="ln"><span style="--i:0">Running at</span></span><span class="ln"><span class="gr" style="--i:1">enterprise scale.</span></span></h2>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat"><div class="odo" data-v="99" data-s="%+"></div><p>of recorded calls analysed</p></div>
+      <div class="stat"><div class="odo" data-v="1" data-s="M"></div><p>call minutes analysed to date</p></div>
+      <div class="stat"><div class="odo" data-v="80" data-s="%"></div><p>less QA review time at a live deployment</p></div>
+      <div class="stat"><div class="odo" data-v="5" data-s="+"></div><p>enterprise contact centres in production</p></div>
+    </div>
+    <div class="bf">
+      <div class="bf-a up">
+        <Eyebrow>Built for operations at scale</Eyebrow>
+        <p class="d3">Made for contact centres handling 300,000+ call minutes a month.</p>
+        <div class="creds"><div><b data-count="30000" data-suf="+">0</b><span>ATMs run on our AI</span></div><div><b data-count="68000" data-suf="+">0</b><span>telecom towers monitored</span></div><div><b>90<small>min</small><em>→</em>45<small>min</small></b><span>time to repair, cut in half</span></div></div>
+        <div class="ind" id="ind"><span class="ic-bank"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-roof" d="M3 9.5 12 4l9 5.5"/><path d="M5 10v8M9.7 10v8M14.3 10v8M19 10v8"/><path d="M3 20.5h18"/><circle class="i-coin" cx="12" cy="7.4" r=".9"/></svg>Banking</span><span class="ic-tower"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10.5 8.5 21M12 10.5 15.5 21M9.6 17.5h4.8"/><circle cx="12" cy="9" r="1.4"/><path class="i-w1" d="M8.6 5.8a4.8 4.8 0 0 0 0 6.4M15.4 5.8a4.8 4.8 0 0 1 0 6.4"/><path class="i-w2" d="M6.2 3.6a8 8 0 0 0 0 10.8M17.8 3.6a8 8 0 0 1 0 10.8"/></svg>Telecom</span><span class="ic-shield"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v6c0 4.2 3.2 7.8 7.5 9 4.3-1.2 7.5-4.8 7.5-9V6z"/><path class="i-tick" d="m8.8 12 2.3 2.3 4.3-4.6"/></svg>Insurance</span><span class="ic-headset"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="3.5" y="13" width="3.5" height="5.5" rx="1.4"/><rect x="17" y="13" width="3.5" height="5.5" rx="1.4"/><path class="i-mic" d="M19 18.5c0 1.6-1.6 2.5-4 2.5h-2"/></svg>BPO</span><span class="ic-cart"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="i-cart"><path d="M3 4h2.2l2.2 10.2h10.4L20 7.5H6.4"/><circle cx="9" cy="18.6" r="1.4"/><circle cx="16.4" cy="18.6" r="1.4"/></g></svg>E-commerce</span><span class="ic-bolt"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-bolt" d="M13 3 5.5 13.2h5.6L10.5 21 18.5 10.6h-5.7z"/></svg>Utilities</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PILOT (horizontal) -->
+<section class="hz" id="pilot">
+  <div class="hz-st">
+    <div class="hz-t" id="hzt">
+      <div class="pp intro">
+        <Eyebrow>Free pilot</Eyebrow>
+        <h2 class="d2 mt-[18px]!">See it on<br><span class="gr">your own calls.</span></h2>
+        <p class="lead mt-[24px]!">Three steps. Five business days. No integration, no cost, no commitment.</p>
+      </div>
+      <div class="pp" data-k="1">
+        <span class="pill tag">Day 0</span>
+        <div class="n">01</div><h3>Send recordings</h3><p>Upload a batch of calls or a CSV.</p>
+        <div class="vis">
+          <div class="dz"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Drop recordings or a CSV</div>
+          <div class="file" style="--k:0"><span class="fi">WAV</span><div><b class="font-normal!">call_00142.wav</b><i class="pb"><s></s></i></div><span class="ok"><svg viewBox="0 0 10 10"><path d="M2 5l2 2 4-4"/></svg></span></div>
+          <div class="file" style="--k:1"><span class="fi">WAV</span><div><b class="font-normal!">call_00287.wav</b><i class="pb"><s></s></i></div><span class="ok"><svg viewBox="0 0 10 10"><path d="M2 5l2 2 4-4"/></svg></span></div>
+          <div class="file" style="--k:2"><span class="fi">CSV</span><div><b class="font-normal!">batch_october.csv</b><i class="pb"><s></s></i></div><span class="ok"><svg viewBox="0 0 10 10"><path d="M2 5l2 2 4-4"/></svg></span></div>
+        </div>
+      </div>
+      <div class="pp" data-k="2">
+        <span class="pill tag">Days 1 to 4</span>
+        <div class="n">02</div><h3>We score every call</h3><p>On your scorecard, in every language.</p>
+        <div class="vis">
+          <div class="flex! justify-between! items-center! mb-[12px]!"><span class="lab">Call 00142</span><div class="sring"><b>83%</b></div></div>
+          <div class="mini-sc"><span class="scan"></span><div>Script adherence<span class="pill" style="--k:0">Pass</span></div><div>Required disclosure<span class="pill f" style="--k:1">Fatal</span></div><div>Customer tone<span class="pill w" style="--k:2">Frustrated</span></div><div>Churn risk<span class="pill w" style="--k:3">High</span></div></div>
+        </div>
+      </div>
+      <div class="pp" data-k="3">
+        <span class="pill tag">Day 5</span>
+        <div class="n">03</div><h3>See what you missed</h3><p>Your report, call by call, in your inbox.</p>
+        <div class="vis rep"><div><b data-rc="100" data-suf="%">0%</b><span>calls scored</span></div><div class="o"><b data-rc="41">0</b><span>fatal misses found</span></div>
+          <div class="bars"><i style="--h:40%;--k:0"></i><i style="--h:62%;--k:1"></i><i style="--h:48%;--k:2"></i><i style="--h:80%;--k:3"></i><i class="o" style="--h:96%;--k:4"></i><i style="--h:56%;--k:5"></i><i style="--h:70%;--k:6"></i><i style="--h:44%;--k:7"></i><i class="o" style="--h:88%;--k:8"></i><i style="--h:60%;--k:9"></i><i style="--h:52%;--k:10"></i><i style="--h:74%;--k:11"></i></div></div>
+      </div>
+    </div>
+    <div class="hz-bar" id="hzb"><i></i><b></b></div>
+    <div class="hz-foot"><span>Scroll to follow the pilot</span><a class="tl" href="#start">Start now<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
+  </div>
+</section>
+
+<!-- SECURE -->
+<section class="sec" id="secure">
+  <div class="wrap">
+    <div class="head rv">
+      <Eyebrow>Security and deployment</Eyebrow>
+      <h2 class="d2"><span class="ln"><span style="--i:0">Your data.</span></span><span class="ln"><span class="gr" style="--i:1">Your rules.</span></span></h2>
+    </div>
+    <div class="bento" id="bento">
+      <div class="bx s5 dk up"><span class="seal"></span>
+        <div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.2 3.2 7.8 7.5 9 4.3-1.2 7.5-4.8 7.5-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="lab">Certified</span></div>
+        <div class="vis pt-[0]!"><div class="iso">ISO<br><span>27001</span></div><p class="mt-[16px]!">Avishkar AI is ISO 27001 certified.</p></div>
+      </div>
+      <div class="bx s7 up" style="--d:.1s">
+        <div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 1 1 .8-8.9A6 6 0 0 1 19 11a3.5 3.5 0 0 1-.5 7z"/></svg></span><span class="lab">Deployment</span></div>
+        <h3>Runs where you choose</h3><p>Call recordings carry customer data. You decide where they live.</p>
+        <div class="vis dep" id="dep"><div class="on"><i></i><span>Option 1</span><b>Our cloud</b></div><div><i></i><span>Option 2</span><b>Your private cloud</b></div><div><i></i><span>Option 3</span><b>On-premises</b></div></div>
+      </div>
+      <div class="bx s12 up intg-bx">
+        <div class="intg">
+          <div class="intg-l"><div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-10 0zM12 16v5"/></svg></span><span class="lab">Integrations</span></div><h3>Plugs into your stack</h3><p>Works with the contact centre and CRM platforms your team already runs.</p><div class="intg-k"><div><b>11</b><span>platforms supported</span></div><div><b>API</b><span>and webhooks</span></div><div><b>ISO</b><span>27001 certified</span></div></div></div>
+          <div class="logom"><div class="lrow"><div class="ltrack"><span class="lg" title="Amazon Connect"><img src="assets/img/logos/amazon-connect.svg" alt="Amazon Connect" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="Twilio"><img src="assets/img/logos/twilio.svg" alt="Twilio" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="Avaya"><img src="assets/img/logos/avaya.svg" alt="Avaya" loading="lazy" decoding="async" class="h-[17px]!"></span><span class="lg" title="Genesys Cloud"><img src="assets/img/logos/genesys.svg" alt="Genesys Cloud" loading="lazy" decoding="async" class="h-[21px]!"></span><span class="lg" title="NICE CXone"><img src="assets/img/logos/nice.svg" alt="NICE CXone" loading="lazy" decoding="async" class="h-[22px]!"></span><span class="lg" title="Five9"><img src="assets/img/logos/five9.svg" alt="Five9" loading="lazy" decoding="async" class="h-[28px]!"></span><span class="dup" aria-hidden="true"><span class="lg" title="Amazon Connect"><img src="assets/img/logos/amazon-connect.svg" alt="" data-a="Amazon Connect" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="Twilio"><img src="assets/img/logos/twilio.svg" alt="" data-a="Twilio" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="Avaya"><img src="assets/img/logos/avaya.svg" alt="" data-a="Avaya" loading="lazy" decoding="async" class="h-[17px]!"></span><span class="lg" title="Genesys Cloud"><img src="assets/img/logos/genesys.svg" alt="" data-a="Genesys Cloud" loading="lazy" decoding="async" class="h-[21px]!"></span><span class="lg" title="NICE CXone"><img src="assets/img/logos/nice.svg" alt="" data-a="NICE CXone" loading="lazy" decoding="async" class="h-[22px]!"></span><span class="lg" title="Five9"><img src="assets/img/logos/five9.svg" alt="" data-a="Five9" loading="lazy" decoding="async" class="h-[28px]!"></span></span></div></div><div class="lrow"><div class="ltrack"><span class="lg" title="Salesforce"><img src="assets/img/logos/salesforce.svg" alt="Salesforce" loading="lazy" decoding="async" class="h-[36px]!"></span><span class="lg" title="Microsoft Dynamics 365"><img src="assets/img/logos/dynamics-365.svg" alt="Microsoft Dynamics 365" loading="lazy" decoding="async" class="h-[17px]!"></span><span class="lg" title="HubSpot"><img src="assets/img/logos/hubspot.svg" alt="HubSpot" loading="lazy" decoding="async" class="h-[25px]!"></span><span class="lg" title="Zendesk"><img src="assets/img/logos/zendesk.svg" alt="Zendesk" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="ServiceNow"><img src="assets/img/logos/servicenow.svg" alt="ServiceNow" loading="lazy" decoding="async" class="h-[16px]!"></span><span class="dup" aria-hidden="true"><span class="lg" title="Salesforce"><img src="assets/img/logos/salesforce.svg" alt="" data-a="Salesforce" loading="lazy" decoding="async" class="h-[36px]!"></span><span class="lg" title="Microsoft Dynamics 365"><img src="assets/img/logos/dynamics-365.svg" alt="" data-a="Microsoft Dynamics 365" loading="lazy" decoding="async" class="h-[17px]!"></span><span class="lg" title="HubSpot"><img src="assets/img/logos/hubspot.svg" alt="" data-a="HubSpot" loading="lazy" decoding="async" class="h-[25px]!"></span><span class="lg" title="Zendesk"><img src="assets/img/logos/zendesk.svg" alt="" data-a="Zendesk" loading="lazy" decoding="async" class="h-[24px]!"></span><span class="lg" title="ServiceNow"><img src="assets/img/logos/servicenow.svg" alt="" data-a="ServiceNow" loading="lazy" decoding="async" class="h-[16px]!"></span></span></div></div></div>
+        </div>
+      </div>
+      <div class="bx up">
+        <div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5M16 5.5a3 3 0 0 1 0 5.6M17.5 14c1.6.7 2.6 2.4 3 5"/></svg></span><span class="lab">Access</span></div>
+        <h3>Role-based access</h3><p>Separate logins for every role.</p>
+        <div class="vis roles"><div>Superadmin<s>All data</s></div><div>QA analyst<s>Scoring</s></div><div>Agent<s>Own calls</s></div></div>
+      </div>
+      <div class="bx up" style="--d:.1s">
+        <div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg></span><span class="lab">Brand</span></div>
+        <h3>White-label ready</h3><p>Run it under your own brand.</p>
+        <div class="vis"><div class="wl"><span>Avishkar AI</span><span>Your brand</span></div></div>
+      </div>
+      <div class="bx up" style="--d:.2s">
+        <div class="bx-h"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="lab">Dashboards</span></div>
+        <h3>Configurable views</h3><p>Agents, teams, campaigns and SIP IDs.</p>
+        <div class="vis mini"><i style="--h:40%;--h2:70%"></i><i style="--h:62%;--h2:44%"></i><i style="--h:48%;--h2:84%"></i><i style="--h:80%;--h2:58%"></i><i class="o" style="--h:24%;--h2:92%"></i><i style="--h:56%;--h2:38%"></i><i style="--h:70%;--h2:64%"></i><i style="--h:44%;--h2:76%"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec pt-[0]!" id="faq">
+  <div class="wrap faq-g">
+    <div class="side2 rv"><Eyebrow>Questions</Eyebrow><h2 class="d2"><span class="ln"><span style="--i:0">Before</span></span><span class="ln"><span class="gr" style="--i:1">you ask.</span></span></h2><a class="tl" href="#contact" data-query>Talk to our team<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
+    <div>
+      <div class="qa"><button aria-expanded="false">Do we need to integrate anything first?<span class="pm"></span></button><div class="ans"><div><p>No. Fill in a one-minute form, we email you a secure upload link, and you send a batch of recordings. Integrations come later, once you decide to roll out.</p></div></div></div>
+      <div class="qa"><button aria-expanded="false">Can we use our existing QA scorecard?<span class="pm"></span></button><div class="ans"><div><p>Yes. Verdicta is configured to match your QA form, with 20+ parameters, fatal and non-fatal scoring, and the weightage you set.</p></div></div></div>
+      <div class="qa"><button aria-expanded="false">Where does our call data live?<span class="pm"></span></button><div class="ans"><div><p>Our cloud, your private cloud, or on-premises. Avishkar AI is ISO 27001 certified, and pilot data is used only for your pilot.</p></div></div></div>
+      <div class="qa"><button aria-expanded="false">Which languages do you support?<span class="pm"></span></button><div class="ans"><div><p>English, Spanish, French, German, Portuguese, Arabic and Mandarin, including calls that switch language mid-conversation.</p></div></div></div>
+      <div class="qa"><button aria-expanded="false">Do we need both products?<span class="pm"></span></button><div class="ans"><div><p>No. Use Verdicta, Veritune, or both on the same calls and the same dashboard.</p></div></div></div>
+      <div class="qa"><button aria-expanded="false">How is pricing structured?<span class="pm"></span></button><div class="ans"><div><p>It depends on your monthly call volume, the products you use and where you deploy. We share a proposal after your pilot.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- START -->
+<section id="start" class="band" data-nodock>
+  <canvas class="sig" aria-hidden="true"></canvas>
+  <div class="wrap start-in">
+    <div class="start-g">
+      <div>
+        <div class="badge"><svg viewBox="0 0 100 100"><defs><path id="cp" d="M50 50m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs><text><textPath href="#cp">Free pilot · 5 business days · Free pilot · 5 days ·</textPath></text></svg><i><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span></i></div>
+        <h2 class="d1">Hear what you <span class="o">missed.</span></h2>
+        <p class="qual"><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>For teams handling 300,000+ call minutes a month.</p>
+      </div>
+      <div class="pcta" id="form"><div class="pc-h"><span>Free pilot</span><b>About a minute</b></div><p class="pc-t">Five questions. We handle the rest.</p><ol class="pc-s"><li><b>01</b>You</li><li><b>02</b>Company</li><li><b>03</b>Calls</li><li><b>04</b>Goals</li><li><b>05</b>Data</li></ol><button class="btn lt wide" type="button" data-pilot data-label="Start my free pilot" data-mag></button><p class="pc-n"><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>We email you a secure upload link. Your scored report follows within 5 business days.</p></div>
+    </div>
+  </div>
+</section>
+
+<Fragment slot="after-main">
+<div id="lqw" aria-hidden="true">
+  <canvas id="lq"></canvas>
+  <div class="pn" id="pn-verdicta" role="dialog" aria-label="Verdicta details">
+    <button class="pn-x" data-close data-cursor="Close">Close<span><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13"/></svg></span></button>
+    <div class="pn-in">
+      <Eyebrow class="q" style="--i:0">Verdicta · Agent quality</Eyebrow>
+      <h2 class="q" style="--i:1">Score every call against the standard you already use.</h2>
+      <p class="lead q" style="--i:2">Your analysts stop sampling and start coaching.</p>
+      <ul>
+        <li class="q" style="--i:3">20+ parameters, matched to your QA form</li>
+        <li class="q" style="--i:4">Fatal and non-fatal scoring, your weightage</li>
+        <li class="q" style="--i:5">Script, dead air, hold, escalation, resolution</li>
+        <li class="q" style="--i:6">Auto rules, like dead air over 5 seconds</li>
+        <li class="q" style="--i:7">CRM tagging check after every call</li>
+        <li class="q" style="--i:8">AI summaries with disposition and actions</li>
+        <li class="q" style="--i:9">Heat maps by agent, team or campaign</li>
+        <li class="q" style="--i:10">Recording playback with full metadata</li>
+      </ul>
+      <div class="q acts" style="--i:11"><a class="btn" href="#start" data-label="Start a free pilot"></a><a class="tl text-[#F4F4F2]!" href="/verdicta">Explore Verdicta</a></div>
+    </div>
+  </div>
+  <div class="pn" id="pn-veritune" role="dialog" aria-label="Veritune details">
+    <button class="pn-x" data-close data-cursor="Close">Close<span><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13"/></svg></span></button>
+    <div class="pn-in">
+      <Eyebrow class="q" style="--i:0">Veritune · Customer signal</Eyebrow>
+      <h2 class="q" style="--i:1">Know who is leaving before they cancel.</h2>
+      <p class="lead q" style="--i:2">Veritune listens to the customer side of every call.</p>
+      <ul>
+        <li class="q" style="--i:3">Tone and emotion across the whole call</li>
+        <li class="q" style="--i:4">Competitor mentions, with context</li>
+        <li class="q" style="--i:5">Churn risk score with confidence</li>
+        <li class="q" style="--i:6">Recommended next action per customer</li>
+        <li class="q" style="--i:7">Sentiment timeline on the recording</li>
+        <li class="q" style="--i:8">Critical flags with weightage you set</li>
+        <li class="q" style="--i:9">Churn-risk, campaign and team dashboards</li>
+        <li class="q" style="--i:10">Works on the same calls as Verdicta</li>
+      </ul>
+      <div class="q acts" style="--i:11"><a class="btn" href="#start" data-label="Start a free pilot"></a><a class="tl text-[#F4F4F2]!" href="/veritune">Explore Veritune</a></div>
+    </div>
+  </div>
+</div>
+</Fragment>
+<Fragment slot="scripts">
+<script>
+  import '../scripts/core.js';
+  import '../scripts/art.js';
+  import '../scripts/onboarding.js';
+  import '../scripts/home.js';
+</script>
+</Fragment>
+</Layout>

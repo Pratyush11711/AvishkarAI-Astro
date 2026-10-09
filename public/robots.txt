@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://avishkarai.netlify.app/sitemap.xml
