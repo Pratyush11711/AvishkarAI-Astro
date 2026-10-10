@@ -15,8 +15,42 @@
     clearTimeout(hideT);
     if (!stay) hideT = setTimeout(function () { chip.hidden = true; }, 3000);
   }
-  addEventListener('offline', function () { say('Offline: showing saved pages', true); });
-  addEventListener('online', function () { say('Back online', false); });
+  var offline = !navigator.onLine;
+  function showOffline() { offline = true; say('Offline: showing saved pages', true); }
+  function showOnline() { if (!offline) return; offline = false; say('Back online', false); }
+  if (offline) showOffline();
+  addEventListener('offline', showOffline);
+  addEventListener('online', showOnline);
+  navigator.serviceWorker && navigator.serviceWorker.addEventListener('message', function (event) {
+    var data = event.data || {};
+    if (data.type === 'SERVED_FROM_CACHE' || data.type === 'OFFLINE') showOffline();
+  });
+  function askWorker() {
+    var worker = navigator.serviceWorker && navigator.serviceWorker.controller;
+    if (worker) worker.postMessage({ type: 'NAV_STATUS' });
+  }
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.ready.then(askWorker).catch(function () {});
+    navigator.serviceWorker.addEventListener('controllerchange', askWorker);
+  }
+  var pingT = 0;
+  function ping() {
+    if (document.hidden) return;
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 4000);
+    fetch('/ping.txt', { cache: 'no-store', signal: ctrl.signal }).then(function (res) {
+      clearTimeout(timer);
+      if (res && res.ok) showOnline();
+      else showOffline();
+    }).catch(function () { clearTimeout(timer); showOffline(); });
+  }
+  function later() {
+    var low = document.documentElement.getAttribute('data-perf') === 'low';
+    clearTimeout(pingT);
+    pingT = setTimeout(function () { ping(); later(); }, low ? 40000 : 18000);
+  }
+  setTimeout(ping, 2000);
+  later();
 
   function settle(img) { img.classList.remove('av-wait'); }
   function watch(img) {

@@ -4,3 +4,5 @@ img.av-wait{background-image:linear-gradient(100deg,var(--faint),var(--line),var
 @media(prefers-reduced-motion:no-preference){img.av-wait{animation:avwait 1.2s linear infinite}}
 @keyframes avwait{to{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){img.av-wait{animation:none}}
+html[data-perf="low"] #bgfx,html[data-perf="low"] #cord,html[data-perf="low"] .drops canvas,html[data-perf="low"] canvas.sig,html[data-perf="low"] canvas.mol,html[data-perf="low"] .lqz{display:none}
+html[data-perf="low"] main>section+section{content-visibility:auto;contain-intrinsic-size:auto 640px}

@@ -671,8 +671,8 @@ body::before{background:radial-gradient(60vw 50vh at 85% 10%,var(--faint),transp
 .foot-soc{margin-top:26px}
 
 /* pilot call-to-action card: calm surface, a step track instead of boxes, no glow */
-.pcta,.start-g .pcta{background:#141416;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -40px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:none;backdrop-filter:none;gap:26px}
-.pcta::after{display:none}
+.pcta,.start-g .pcta{background:linear-gradient(180deg,rgba(255,255,255,.045),transparent 32%),linear-gradient(165deg,#1c1c1f 0%,#121214 58%,#191512 100%);border:1px solid rgba(255,255,255,.12);box-shadow:0 22px 44px -30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.1);-webkit-backdrop-filter:none;backdrop-filter:none;gap:22px}
+.pcta::after{left:22px;right:22px;top:0;bottom:auto;width:auto;height:1px;aspect-ratio:auto;transform:none;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.85}
 .pcta::before{background:radial-gradient(380px circle at var(--mx,80%) var(--my,0%),rgba(255,255,255,.06),transparent 60%)}
 .pc-t{max-width:18ch}
 .pc-s{display:flex;gap:0;grid-template-columns:none;counter-reset:s}

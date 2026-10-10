@@ -47,7 +47,23 @@ function put(cache, req, res) {
   if (!res) return;
   const opaque = res.type === 'opaque';
   if (!opaque && !res.ok) return;
-  cache.put(req, res.clone()).then(() => trim(cache)).catch(() => {});
+  cache.put(req, res.clone()).then(() => trim(cache)).catch(async (err) => {
+    if (!err || err.name !== 'QuotaExceededError') return;
+    const keys = await cache.keys();
+    if (keys.length) await cache.delete(keys[0]);
+  });
+}
+
+function fromCache(res) {
+  const headers = new Headers(res.headers);
+  headers.set('x-sw-cache', 'hit');
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+}
+
+function tellOffline() {
+  self.clients.matchAll({ type: 'window' }).then((clients) => {
+    clients.forEach((client) => client.postMessage({ type: 'SERVED_FROM_CACHE' }));
+  }).catch(() => {});
 }
 
 function networkFirst(req) {
@@ -69,7 +85,11 @@ function networkFirst(req) {
       finish(res);
     }).catch(async () => {
       clearTimeout(timer);
-      finish((await caches.match(req)) || (await caches.match('/offline.html')) || Response.error());
+      const cached = await caches.match(req);
+      if (cached) { tellOffline(); finish(fromCache(cached)); return; }
+      const offline = await caches.match('/offline.html');
+      if (offline) tellOffline();
+      finish(offline || Response.error());
     });
   });
 }
@@ -84,6 +104,11 @@ function staleWhileRevalidate(req) {
     return cached || fresh;
   });
 }
+
+self.addEventListener('message', (event) => {
+  if (!event.data || event.data.type !== 'NAV_STATUS') return;
+  if (!self.navigator.onLine) event.source && event.source.postMessage({ type: 'OFFLINE' });
+});
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;

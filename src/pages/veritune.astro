@@ -4,6 +4,7 @@ import Eyebrow from '../components/Eyebrow.astro';
 import BandCta from '../components/BandCta.astro';
 import '../styles/pages.css';
 ---
+<link slot="head" rel="preload" as="image" href="/assets/img/hero/veritune.webp" type="image/webp" fetchpriority="high">
 <Layout
   page="veritune"
   title="Veritune · Churn risk and sentiment from every call | Avishkar AI"
@@ -19,7 +20,7 @@ import '../styles/pages.css';
     <div class="ctas fx" style="--d:.7s"><a class="btn" href="/pilot" data-label="Start a free pilot" data-mag></a><a class="tl" href="/verdicta">See Verdicta<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
   </div>
   <div class="artwrap fx" style="--d:.3s">
-    <div class="artcard" data-liq data-art="veritune"><div class="art"></div></div>
+    <div class="artcard" data-liq data-art="veritune"><div class="art"><picture><source srcset="/assets/img/hero/veritune.avif" type="image/avif"><source srcset="/assets/img/hero/veritune.webp" type="image/webp"><img src="/assets/img/hero/veritune.webp" alt="Illustrative customer voice wave, with an orange marker for churn risk" width="1600" height="1200" fetchpriority="high" decoding="async"></picture></div></div>
     <div class="chip glass ach1 floaty" style="--n:0"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Churn risk</span><span class="pill w">High</span></div><div class="ch-b"><b>72%</b><small>Call 00287</small></div></div>
     <div class="chip glass ach2 floaty" style="--n:1;animation-delay:-2s"><div class="ch-h"><span>Competitor named</span><span class="pill w">Flag</span></div><small class="mt-[8px]!">02:41 · mentioned twice</small></div>
     <div class="chip glass ach3 floaty" style="--n:2;animation-delay:-4s"><div class="ch-h"><span>Next action</span><span class="pill f">24h</span></div><small class="mt-[8px]!">Retention follow-up</small></div>

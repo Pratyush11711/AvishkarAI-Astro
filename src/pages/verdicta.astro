@@ -4,6 +4,7 @@ import Eyebrow from '../components/Eyebrow.astro';
 import BandCta from '../components/BandCta.astro';
 import '../styles/pages.css';
 ---
+<link slot="head" rel="preload" as="image" href="/assets/img/hero/verdicta.webp" type="image/webp" fetchpriority="high">
 <Layout
   page="verdicta"
   title="Verdicta · Automated call QA and agent scoring | Avishkar AI"
@@ -19,7 +20,7 @@ import '../styles/pages.css';
     <div class="ctas fx" style="--d:.7s"><a class="btn" href="/pilot" data-label="Start a free pilot" data-mag></a><a class="tl" href="/veritune">See Veritune<svg viewBox="0 0 14 14"><path d="M4 10 10 4M5 4h5v5"/></svg></a></div>
   </div>
   <div class="artwrap fx" style="--d:.3s">
-    <div class="artcard" data-liq data-art="verdicta"><div class="art"></div></div>
+    <div class="artcard" data-liq data-art="verdicta"><div class="art"><picture><source srcset="/assets/img/hero/verdicta.avif" type="image/avif"><source srcset="/assets/img/hero/verdicta.webp" type="image/webp"><img src="/assets/img/hero/verdicta.webp" alt="Illustrative QA score trend, with one failing parameter marked in orange" width="1600" height="1200" fetchpriority="high" decoding="async"></picture></div></div>
     <div class="chip glass ach1 floaty" style="--n:0"><div class="ch-h"><span><span class="aw sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Call 00142</span><span class="pill f">Fatal</span></div><small class="mt-[8px]!">Required disclosure missed</small></div>
     <div class="chip glass ach2 floaty" style="--n:1;animation-delay:-2s"><div class="ch-h"><span>QA score</span><span class="pill">This week</span></div><div class="ch-b"><b>83%</b><div class="spark" data-spark></div></div></div>
     <div class="chip glass ach3 floaty" style="--n:2;animation-delay:-4s"><div class="ch-h"><span>Script adherence</span><span class="pill">Pass</span></div><div class="prog"><i style="--w:92%"></i></div></div>

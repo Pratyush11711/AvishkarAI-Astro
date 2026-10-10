@@ -6,6 +6,7 @@
 .artwrap{position:relative;perspective:1400px}
 .artcard{position:relative;border-radius:30px;overflow:hidden;aspect-ratio:4/4.3;background:#0b0b0c;box-shadow:var(--shadow);transform-style:preserve-3d;will-change:transform}
 .artcard .art{position:absolute;inset:-6%;background-size:cover;background-position:center;transform:translateZ(0) scale(1.04)}
+.artcard .art picture,.artcard .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .artcard::after{content:"";position:absolute;inset:0;background:radial-gradient(500px circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.14),transparent 60%);pointer-events:none}
 .artwrap .chip{position:absolute}
 .ach1{left:-6%;top:12%}.ach2{right:-5%;top:46%}.ach3{left:8%;bottom:-4%}
@@ -308,8 +309,8 @@
 .fd:hover::after{opacity:1;animation:fdTrace 1.6s cubic-bezier(.6,0,.25,1) forwards}
 @keyframes fdTrace{from{--tr:0deg}to{--tr:360deg;opacity:0}}
 .fd:hover{border-color:var(--line)}
-.fd .av img{filter:grayscale(1) contrast(1.05);transition:filter .9s var(--x),transform .9s var(--x)}
-.fd:hover .av img{filter:none;transform:scale(1.04)}
+.fd .av img{transition:transform .9s var(--x)}
+.fd:hover .av img{transform:scale(1.04)}
 .fd .av::after{transition:border-color .5s,animation-duration .5s}
 .fd:hover .av::after{border-color:var(--acc);animation-duration:8s}
 .fd h3{transition:letter-spacing .9s var(--x)}

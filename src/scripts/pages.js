@@ -61,4 +61,11 @@ AV.$$('.xl').forEach(function(x,j){var w=document.createElement('div');w.classNa
     var act=0;for(var i=0;i<secs.length;i++){if(secs[i].getBoundingClientRect().top<innerHeight*.3)act=i}
     if(act!==cur){cur=act;links.forEach(function(a,k){a.classList.toggle('on',k===act)});var a=links[act];if(a&&innerWidth<=900)a.scrollIntoView({block:'nearest',inline:'center'})}}
   addEventListener('scroll',upd,{passive:true});upd()})();
+document.addEventListener('astro:page-load', function () {
+  if (!window.ART || !window.AV) return;
+  document.querySelectorAll('[data-art]').forEach(function (card) {
+    var art = card.querySelector('.art');
+    if (art && !art.style.backgroundImage) AV.liquify(art, ART.get(card.getAttribute('data-art')));
+  });
+});
 AV.start();
