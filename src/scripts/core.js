@@ -29,17 +29,36 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(bumpLayout);
 function box(el){var c=el._bx;if(!c||c.v!==LV){var t=0,l=0,n=el;while(n){t+=n.offsetTop;l+=n.offsetLeft;n=n.offsetParent}c=el._bx={v:LV,t:t,l:l,h:el.offsetHeight,w:el.offsetWidth}}
   var y=scrollY;return {top:c.t-y,bottom:c.t-y+c.h,height:c.h,left:c.l,width:c.w}}
 var AV={near:near,box:box,$:$,$$:$$,RM:RM,FINE:FINE,clamp:clamp,lerp:lerp,sm:sm,eio:eio,eo:eo,expo:expo,hex:hex,tok:tok,isDark:isDark,tween:tween,MARK_D:MARK_D,
-  on:function(f){loops.push(f)},ready:function(f){readyFns.push(f)},theme:function(f){themeHooks.push(f)},mx:-100,my:-100,pvx:0,vel:0,intro:null};
+  on:function(f){loops.push(f)},off:function(f){var i=loops.indexOf(f);if(i>-1)loops.splice(i,1)},booted:false,ready:function(f){if(AV.booted){try{f()}catch(e){console.warn(e)}return}readyFns.push(f)},theme:function(f){themeHooks.push(f)},mx:-100,my:-100,pvx:0,vel:0,intro:null};
+
+/* run heavy, non-critical set-up once the splash has finished and the browser has a free moment */
+AV.later=function(fn,t){AV.ready(function(){if(window.requestIdleCallback)requestIdleCallback(function(){try{fn()}catch(e){console.warn(e)}},{timeout:t||1500});else setTimeout(function(){try{fn()}catch(e){console.warn(e)}},300)})};
 
 /* ---------- favicon + tab title ----------
    On the page the mark stays white. Leaving the tab blinks it orange, then white. */
-var fav=document.querySelector('link[rel="icon"]');
-if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav)}
-fav.type='image/svg+xml';
-document.querySelectorAll('link[rel="icon"]').forEach(function(n){if(n!==fav)n.remove()});
 var awayFav=false;
-function setFav(){var c=awayFav?'#FF5B1F':'#FFFFFF';fav.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 26 310 292"><path fill="'+c+'" fill-rule="evenodd" d="'+MARK_D+'"/></svg>')}
+/* The favicon has no background, just the mark. It is white on a dark tab strip and dark on a light one,
+   so it always reads. The link is looked up every time because a page swap replaces the <head> icon link. */
+function setFav(){
+  var fav=document.querySelector('link[rel="icon"]');
+  if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav)}
+  document.querySelectorAll('link[rel="icon"]').forEach(function(n){if(n!==fav)n.remove()});
+  var dk=root.getAttribute('data-theme')==='dark',tile=dk?'#0A0A0B':'#F4F4F2';
+  var href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 26 310 292"><style>path{fill:#0A0A0B}@media (prefers-color-scheme:dark){path{fill:#FFFFFF}}</style><path'+(awayFav?' style="fill:#FF5B1F"':'')+' fill-rule="evenodd" d="'+MARK_D+'"/></svg>');
+  fav.type='image/svg+xml';if(fav.getAttribute('href')!==href)fav.setAttribute('href',href);
+  var tc=document.querySelector('meta[name="theme-color"][data-av]');
+  if(!tc){tc=document.createElement('meta');tc.name='theme-color';tc.setAttribute('data-av','');document.head.insertBefore(tc,document.head.firstChild)}
+  tc.content=tile}
 setFav();
+themeHooks.push(setFav);
+/* A swap rebuilds <html> from the new page, which has no theme. Carry the live state over before it happens. */
+document.addEventListener('astro:before-swap',function(e){
+  var nr=e.newDocument.documentElement;
+  Array.prototype.slice.call(root.attributes).forEach(function(a){if(a.name.indexOf('data-astro')===0||a.name==='lang')return;nr.setAttribute(a.name,a.value)});
+  var t=root.getAttribute('data-theme');if(t)nr.setAttribute('data-theme',t);
+});
+document.addEventListener('astro:after-swap',function(){awayFav=false;setFav()});
+document.addEventListener('astro:page-load',function(){baseTitle=document.title});
 var baseTitle=document.title,away=['Your calls are still talking','97 in 100 calls go unheard','Your free pilot is waiting','Come back, every call counts'],tt=null,tk2=0,awayT=null;
 function blink(){var msg=away[Math.floor(tk2/3)%away.length],fr=['●','○'][tk2%2];document.title=fr+' '+msg;awayFav=tk2%2===0;setFav();tk2++}
 document.addEventListener('visibilitychange',function(){
@@ -89,6 +108,11 @@ if(FINE&&cur){root.classList.add('cc');
   },{passive:true});
   document.addEventListener('mouseleave',function(){cur.classList.remove('on')});
 }else{addEventListener('pointermove',function(e){AV.mx=e.clientX;AV.my=e.clientY},{passive:true})}
+/* a page swap brings a fresh #cur element, so point the cursor at it and show it straight away */
+document.addEventListener('astro:after-swap',function(){
+  cur=$('#cur');bub=$('#bub');arw=cur&&$('.arw',cur);
+  if(FINE&&cur){root.classList.add('cc');if(AV.mx>-50){cur.classList.add('on');cur.style.transform='translate3d('+ax+'px,'+ay+'px,0)'}}
+});
 AV.clearCursor=function(){if(cur)cur.classList.remove('cl','hov')};
 loops.push(function(){var mx=AV.mx,my=AV.my;AV.pvx=lerp(AV.pvx,(mx-pmx),.2);pmx=mx;if(!FINE||!cur)return;
   /* settled: skip the style writes so an idle page does no style work */
@@ -98,13 +122,17 @@ loops.push(function(){var mx=AV.mx,my=AV.my;AV.pvx=lerp(AV.pvx,(mx-pmx),.2);pmx=
 
 /* ---------- twist buttons ---------- */
 var ARW='<svg viewBox="0 0 20 20"><use href="#arr"/></svg>',mags=[];
+/* widths are read for every button first and written afterwards, so many buttons cost one layout, not one each */
+var szQ=[],szT=0;
+function szFlush(){szT=0;var q=szQ,w;szQ=[];w=q.map(function(b){return b.offsetWidth});q.forEach(function(b,i){if(w[i])b.style.setProperty('--w',w[i]+'px')})}
+function szReq(b){if(szQ.indexOf(b)<0)szQ.push(b);if(!szT)szT=requestAnimationFrame(szFlush)}
 function twist(b){
   if(b._tw)return;b._tw=1;
   var lab=b.getAttribute('data-label')||'',n=b.classList.contains('sm')?10:(innerWidth<600?10:14),c='<span class="tw-c"><span>'+lab+'</span><span class="tw-ic">'+ARW+'</span></span>',h='<span class="tw-size" aria-hidden="true">'+c+'</span>';
   for(var i=0;i<n;i++)h+='<span class="sl" aria-hidden="true" style="--i:'+i+';--dl:'+(Math.min(i,n-1-i)*48)+'ms"><span class="fc f">'+c+'</span><span class="fc b">'+c+'</span></span>';
   b.innerHTML=h+'<span class="sr">'+lab+'</span>';b.style.setProperty('--n',n);b.setAttribute('aria-label',lab);
   var k=0,sl=$$('.sl',b),armed=false,dT=null,hold=600+Math.ceil(n/2)*48+120;
-  function size(){var w=b.offsetWidth;if(w)b.style.setProperty('--w',w+'px')}
+  function size(){szReq(b)}
   size();if(window.ResizeObserver)new ResizeObserver(size).observe(b);
   function set(){sl.forEach(function(s){s.style.setProperty('--r',(k*180)+'deg')})}
   /* The 3D slices only exist while the button is flipping. At rest the button is flat, so a page with
@@ -134,7 +162,7 @@ AV.relabel=function(b,lab){if(!b.querySelector('.sl')){b.textContent=lab;return}
   $$('.tw-c>span:first-child',b).forEach(function(s){s.textContent=lab});var sr=$('.sr',b);if(sr)sr.textContent=lab;
   requestAnimationFrame(function(){var w=b.offsetWidth;if(w)b.style.setProperty('--w',w+'px')})};
 $$('.btn[data-label]').forEach(twist);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){$$('.btn').forEach(function(b){if(b.offsetWidth)b.style.setProperty('--w',b.offsetWidth+'px')})});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){$$('.btn').forEach(szReq)});
 loops.push(function(){mags.forEach(function(m){m.x=lerp(m.x,m.tx,.12);m.y=lerp(m.y,m.ty,.12);if(Math.abs(m.x)+Math.abs(m.y)>.05||m.tx)m.el.style.transform='translate3d('+m.x.toFixed(2)+'px,'+m.y.toFixed(2)+'px,0)'})});
 
 /* ---------- icon strokes get a normalised length so hover can redraw them ---------- */
@@ -289,8 +317,15 @@ function curtain(){return document.getElementById('ld')}
 function hideCurtain(){clearTimeout(ldShow);clearTimeout(ldMax);var el=curtain();if(el){el.classList.add('gone');el.style.pointerEvents='none'}document.body.style.overflow='';ldState='idle'}
 function armCurtain(){if(ldState!=='idle')return;ldState='wait';var cap=root.getAttribute('data-perf')==='low'?800:1400;ldShow=setTimeout(function(){if(ldState!=='wait')return;ldState='on';var el=curtain();if(el){el.classList.remove('gone','out');el.style.pointerEvents='auto'}ldMax=setTimeout(hideCurtain,cap)},150)}
 document.addEventListener('astro:before-preparation',armCurtain);
+/* The home page builds its canvases once per document. Coming back to it through the router would leave the wire
+   and the other home effects dead, so that one trip is a normal page load (same as before the router). */
+document.addEventListener('astro:before-preparation',function(e){
+  if(!window.__avHome||e.to.pathname!=='/'||e.from.pathname==='/')return;
+  var href=e.to.href,back=e.navigationType==='traverse';
+  e.loader=function(){try{sessionStorage.setItem('av-nav','1')}catch(x){}if(back)location.replace(href);else location.assign(href);return new Promise(function(){})};
+});
 var navs=0;
-document.addEventListener('astro:page-load',function(){if(!navs++)return;hideCurtain();document.body.classList.add('ready');$$('.btn[data-label]').forEach(twist);bindTog();if(!location.hash)scrollTo(0,0);var h=document.querySelector('h1');if(h){if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true})}catch(err){}}});
+document.addEventListener('astro:page-load',function(){if(!navs++)return;hideCurtain();document.body.classList.add('ready');var bd=$('#brand');if(bd)bd.classList.remove('wait');$$('.btn[data-label]').forEach(twist);bindTog();if(!location.hash)scrollTo(0,0);var h=document.querySelector('h1');if(h){if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true})}catch(err){}}});
 addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
 
 /* ---------- molecular background (follows the cursor, very faint) ---------- */
@@ -301,6 +336,8 @@ addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
     for(var y=-GAP;y<H+GAP;y+=GAP)for(var xx=-GAP;xx<W+GAP;xx+=GAP)P.push({bx:xx+(Math.random()-.5)*GAP*.9,by:y+(Math.random()-.5)*GAP*.9,x:0,y:0,e:0,ph:Math.random()*6.28,o:Math.random()<.07,r:.8+Math.random()*1.2})}
   function cols(){cF=hex(tok('--fg'));cA=hex(tok('--acc'))}
   build();cols();addEventListener('resize',build);themeHooks.push(cols);
+  /* a page swap brings a fresh #bgfx canvas, so draw into that one from now on */
+  document.addEventListener('astro:after-swap',function(){var n=$('#bgfx');if(!n)return;cv=n;x=cv.getContext('2d');build();cols();clean=true});
   function rgba(c,a){return 'rgba('+(c[0]*255|0)+','+(c[1]*255|0)+','+(c[2]*255|0)+','+a.toFixed(3)+')'}
   var idle=0;loops.push(function(now){var t=now/1000,mx=AV.mx,my=AV.my,mv=Math.hypot(mx-lmx,my-lmy);lmx=mx;lmy=my;E=lerp(E,clamp(mv/18,0,1),.08);if(mv<.5&&clean){if(++idle>2)return}else idle=0;
     var act=[],any=false,dk=isDark(),base=dk?.34:.22;
@@ -339,11 +376,11 @@ addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
 /* ---------- liquify hover (WebGL) for images ---------- */
 AV.liquify=function(host,src){
   if(host.querySelector('canvas.lqz'))return;
-  var poster=src._u||(src._u=src.toDataURL('image/jpeg',.82));
-  host.style.backgroundImage='url('+poster+')';
-  if(document.documentElement.getAttribute('data-perf')==='low')return;
+  /* the static poster costs a 1600x1200 JPEG encode, so it is only made when the live canvas will not run */
+  function poster(){var p=src._u||(src._u=src.toDataURL('image/jpeg',.82));host.style.backgroundImage='url('+p+')'}
+  if(document.documentElement.getAttribute('data-perf')==='low'){poster();return}
   var cv=document.createElement('canvas');cv.className='lqz';host.appendChild(cv);var gl=null;try{gl=cv.getContext('webgl',{alpha:true,premultipliedAlpha:true})}catch(e){}
-  if(!gl){cv.remove();return}
+  if(!gl){cv.remove();poster();return}
   var vs='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
   var fs='precision highp float;varying vec2 v;uniform sampler2D T;uniform vec2 R,TS,M,V;uniform float S,Ti;'+
   'void main(){float ra=R.x/R.y,ta=TS.x/TS.y;vec2 uv=v;vec2 d=v-M;d.x*=ra;float f=exp(-dot(d,d)*9.)*S;'+
@@ -526,7 +563,7 @@ var started=false;
 AV.start=function(){
   if(started){B.classList.add('ready');return}started=true;
   requestAnimationFrame(loop);onScroll();
-  var booted=false;function done(){if(booted)return;booted=true;B.classList.add('ready');readyFns.forEach(function(f){try{f()}catch(e){console.warn(e)}})}
+  var booted=false;function done(){if(booted)return;booted=true;AV.booted=true;B.classList.add('ready');readyFns.forEach(function(f){try{f()}catch(e){console.warn(e)}})}
   var intro=AV.intro||(cameFromSite?particleIntro:fullIntro);try{intro(done)}catch(e){console.warn(e);if(L)L.classList.add('gone');done()}
   setTimeout(function(){if(!booted){if(L)L.classList.add('gone');done()}},9000);
 };

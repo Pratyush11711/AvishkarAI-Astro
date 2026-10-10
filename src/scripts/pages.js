@@ -4,7 +4,7 @@ var $=AV.$,$$=AV.$$,clamp=AV.clamp,lerp=AV.lerp,RM=AV.RM;
 
 
 /* product art with liquify hover */
-$$('[data-art]').forEach(function(c){if(window.ART)AV.liquify($('.art',c),ART.get(c.getAttribute('data-art')))});
+AV.later(function(){$$('[data-art]').forEach(function(c){if(window.ART)AV.liquify($('.art',c),ART.get(c.getAttribute('data-art')))})});
 
 $$('[data-spark]').forEach(function(sp){var h='';for(var i=0;i<14;i++)h+='<i style="--h:'+(25+Math.random()*75).toFixed(0)+'%;transition:height .9s cubic-bezier(.16,1,.3,1)"'+(i===9?' class="o"':'')+'></i>';sp.innerHTML=h;var bars=$$('i',sp);setInterval(function(){if(!document.hidden)bars.forEach(function(b){b.style.setProperty('--h',(25+Math.random()*75).toFixed(0)+'%')})},1400)});
 
@@ -63,9 +63,11 @@ AV.$$('.xl').forEach(function(x,j){var w=document.createElement('div');w.classNa
   addEventListener('scroll',upd,{passive:true});upd()})();
 document.addEventListener('astro:page-load', function () {
   if (!window.ART || !window.AV) return;
-  document.querySelectorAll('[data-art]').forEach(function (card) {
-    var art = card.querySelector('.art');
-    if (art && !art.style.backgroundImage) AV.liquify(art, ART.get(card.getAttribute('data-art')));
+  AV.later(function () {
+    document.querySelectorAll('[data-art]').forEach(function (card) {
+      var art = card.querySelector('.art');
+      if (art && !art.querySelector('canvas.lqz')) AV.liquify(art, ART.get(card.getAttribute('data-art')));
+    });
   });
 });
 AV.start();

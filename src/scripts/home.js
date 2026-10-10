@@ -8,12 +8,15 @@ var B=document.body;
 /* ================= HERO: COILED PHONE CORD ================= */
 var cord=null,THREE=null;
 function Cord(){
-  var cv=$('#cord');if(!THREE)return null;
-  var R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return null}
-  R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));R.setClearColor(0x000000,0);
+  var cv=$('#cord');if(!THREE||!cv||!cv.isConnected)return null;
+  /* low-end: same wire, a little lighter. Slightly fewer segments and sides, pixel ratio up to 1.25, 30 fps. */
+  var low=document.documentElement.getAttribute('data-perf')==='low';
+  var R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:low?'default':'high-performance'})}
+  catch(e){try{R=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:true})}catch(e2){console.warn('cord: WebGL is not available');return null}}
+  R.setPixelRatio(Math.min(devicePixelRatio||1,low?1.25:1.5));R.setClearColor(0x000000,0);
   var S=new THREE.Scene(),Cam=new THREE.PerspectiveCamera(30,1,.1,100);Cam.position.set(0,0,14);
   var G=new THREE.Group();S.add(G);
-  var N=innerWidth<700?2400:3200,M=12,vc=(N+1)*(M+1),pos=new Float32Array(vc*3),tp=new Float32Array(vc*2),idx=[],k=0,i,j;
+  var N=low?2200:innerWidth<700?2400:3200,M=low?10:12,vc=(N+1)*(M+1),pos=new Float32Array(vc*3),tp=new Float32Array(vc*2),idx=[],k=0,i,j;
   for(i=0;i<=N;i++)for(j=0;j<=M;j++){tp[k*2]=i/N;tp[k*2+1]=j/M*Math.PI*2;k++}
   for(i=0;i<N;i++)for(j=0;j<M;j++){var a=i*(M+1)+j,b=(i+1)*(M+1)+j;idx.push(a,b,a+1,b,b+1,a+1)}
   var geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('aTP',new THREE.BufferAttribute(tp,2));geo.setIndex(idx);
@@ -37,7 +40,7 @@ function Cord(){
   'vec4 wp=modelMatrix*vec4(p+n*rad,1.);vW=wp.xyz;vN=normalize(mat3(modelMatrix)*n);vAx=normalize(mat3(modelMatrix)*tc);vT=t;vCoil=Wc(t)*(1.-uUn);',
   'gl_Position=projectionMatrix*viewMatrix*wp;}'].join('\n');
   var FS=[
-  'precision highp float;uniform float uTime,uHot;uniform vec3 uAlb,uAcc;varying vec3 vN,vW,vAx;varying float vT,vCoil;',
+  '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform float uTime,uHot;uniform vec3 uAlb,uAcc;varying vec3 vN,vW,vAx;varying float vT,vCoil;',
   'vec3 shade(vec3 N,vec3 V,float ao){vec3 L1=normalize(vec3(-.45,.8,.55)),L2=normalize(vec3(.7,-.35,.6));',
   'float ndv=max(dot(N,V),0.),d1=max(dot(N,L1),0.),d2=max(dot(N,L2),0.);float lum=uAlb.r;',
   'vec3 col=uAlb*(mix(.4,.9,lum)+mix(.6,.22,lum)*d1+.14*d2)*mix(ao,1.,lum*.78);',
@@ -77,13 +80,14 @@ function Cord(){
       build(c0m,c1m,1.5,{p:V3(-lw-1.5,cy+2.4,0),v:V3(1.2,-.4,0)},{p:V3(lw+1.6,cy-1.2,0),v:V3(-1,.3,0)},lw+2,cy+.3);
       U.uTurns.value=Math.round((c1m.x-c0m.x+1.2)/.118);}
   }
-  layout();var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,150)});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+  layout();var rt,onRs=function(){clearTimeout(rt);rt=setTimeout(layout,150)};addEventListener('resize',onRs);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
   var albT=[.07,.07,.075];
   function theme(){var d=isDark(),a=hex(tok('--acc'));albT=d?[.97,.97,.96]:[.07,.07,.075];ACC.set(a[0],a[1],a[2])}
   theme();ALB.set(albT[0],albT[1],albT[2]);AV.theme(theme);
   var vis=true,t=0,last=performance.now(),wv=0,smx=0,smy=0,hero=$('#hero'),heroIn=$('#heroIn'),lastP=-1;
-  new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(cv);
-  AV.on(function(now){
+  var io=new IntersectionObserver(function(e){vis=e[0].isIntersecting});io.observe(cv);
+  var frame;AV.on(frame=function(now){
+    if(low&&now-last<32)return;
     var dt=Math.min((now-last)/1000,.05);last=now;if(!vis)return;
     var hr=AV.box(hero),p=clamp(-hr.top/(hr.height*.8),0,1);U.uUn.value=sm(p);
     if(Math.abs(p-lastP)>.001){lastP=p;heroIn.style.transform='translate3d(0,'+(p*-80).toFixed(1)+'px,0)';heroIn.style.opacity=(1-p*1.2).toFixed(3)}
@@ -95,14 +99,22 @@ function Cord(){
     wv=lerp(wv,Math.min(Math.abs(AV.pvx)/40,1),.05);U.uWave.value=wv;
     R.render(S,Cam);
   });
-  return {intro:function(){if(RM){U.uIntro.value=1.03;return}AV.tween({dur:2.8,update:function(e){U.uIntro.value=e*1.03}})}};
+  return {intro:function(){if(RM){U.uIntro.value=1.03;return}AV.tween({dur:2.8,update:function(e){U.uIntro.value=e*1.03}})},
+    dispose:function(){AV.off(frame);io.disconnect();removeEventListener('resize',onRs);clearTimeout(rt);try{geo.dispose();R.dispose();R.forceContextLoss()}catch(e){}}};
 }
 /* three.js (about 600 KB) is fetched after the page has loaded, so it never blocks first paint or input.
    The cord fades in with its own intro as soon as it is ready. */
-var isReady=false;AV.ready(function(){isReady=true;if(cord)cord.intro()});
-function bootCord(){try{cord=Cord()}catch(e){console.warn(e)}if(cord&&isReady)cord.intro()}
-function loadThree(){import('three').then(function(m){THREE=m;bootCord()},function(e){console.warn(e)})}
-if(document.readyState==='complete')setTimeout(loadThree,60);else addEventListener('load',function(){setTimeout(loadThree,60)});
+/* The library is fetched early, but the wire (renderer, 40k-vertex mesh, shader compile) is only built once the
+   splash has finished and the browser is idle, so it never competes with the opening animation. */
+function bootCord(){AV.ready(function(){
+  var go=function(){if(cord)return;try{cord=Cord()}catch(e){console.warn(e)}if(cord)cord.intro()};
+  if('requestIdleCallback' in window)requestIdleCallback(go,{timeout:700});else setTimeout(go,150)})}
+var tries=0,lowBoot=document.documentElement.getAttribute('data-perf')==='low';
+function loadThree(){import('three').then(function(m){THREE=m;bootCord()},function(e){console.warn(e);if(++tries<3)setTimeout(loadThree,1500*tries)})}
+/* start as soon as the browser is idle instead of waiting for the window load event (images, fonts) */
+if('requestIdleCallback' in window)requestIdleCallback(loadThree,{timeout:lowBoot?2500:900});else setTimeout(loadThree,lowBoot?1200:250);
+document.addEventListener('astro:before-swap',function(){if(cord){cord.dispose();cord=null}},{once:true});
+window.__avHome=true;
 
 /* hero chips live data */
 (function(){
@@ -131,10 +143,12 @@ if(document.readyState==='complete')setTimeout(loadThree,60);else addEventListen
 })();
 
 /* ================= PRODUCT CARDS + LIQUID EXPAND ================= */
-['verdicta','veritune'].forEach(function(k){AV.liquify($('#c-'+k+' .art'),ART.get(k))});
+AV.later(function(){['verdicta','veritune'].forEach(function(k){AV.liquify($('#c-'+k+' .art'),ART.get(k))})});
 var cardsEl=$$('.card');
 var prNr=AV.near($('#products'));AV.on(function(){if(!prNr.v||!AV.sd)return;cardsEl.forEach(function(c){var r=AV.box(c);if(r.bottom<0||r.top>innerHeight)return;var p=(r.top+r.height/2-innerHeight/2)/innerHeight;$('.art',c).style.setProperty('--py',(p*-60).toFixed(1)+'px')})});
-var LQ=(function(){
+/* the liquid panel's WebGL (context, shader, two 1600x1200 textures) is built after the splash, in an idle moment.
+   Until then a click on a card opens the panel the plain way. */
+var LQ=null,mkLQ=function(){
   var cv=$('#lq'),gl=null;try{gl=cv.getContext('webgl',{antialias:true,alpha:true,premultipliedAlpha:true})}catch(e){}
   if(!gl)return null;
   var vs='attribute vec2 aUv;uniform vec4 uFrom;uniform vec2 uRes;uniform float uP,uK,uT;varying vec2 vUv;varying vec2 vS;'+
@@ -165,7 +179,8 @@ var LQ=(function(){
     gl.uniform4f(Lc.uFrom,st.from[0],st.from[1],st.from[2],st.from[3]);gl.uniform2f(Lc.uRes,innerWidth,innerHeight);gl.uniform1f(Lc.uP,st.p);gl.uniform1f(Lc.uK,st.k);gl.uniform1f(Lc.uT,t);gl.uniform1i(Lc.uTex,0);gl.uniform2f(Lc.uTS,1600,1200);gl.uniform1f(Lc.uRad,st.rad);gl.uniform1f(Lc.uIdle,st.idle);
     gl.drawElements(gl.TRIANGLES,ix.length,gl.UNSIGNED_SHORT,0)});
   return st;
-})();
+};
+AV.later(function(){LQ=mkLQ()},2500);
 var lqw=$('#lqw'),openKey=null,busy=false;
 function openPanel(card,kb){
   if(busy||openKey)return;var key=card.getAttribute('data-p'),pn=$('#pn-'+key);openKey=key;AV.clearCursor();
