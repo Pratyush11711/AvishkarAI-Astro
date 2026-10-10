@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /login
+Disallow: /dashboard
+Disallow: /admin
 
 Sitemap: https://avishkarai.netlify.app/sitemap.xml

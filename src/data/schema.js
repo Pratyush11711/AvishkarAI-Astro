@@ -15,6 +15,14 @@ export const organization = {
     "addressRegion": "Karnataka",
     "addressCountry": "IN"
   },
+  "email": "arpit@avishkarai.com",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "arpit@avishkarai.com",
+    "areaServed": "Worldwide",
+    "availableLanguage": ["English"]
+  },
   "sameAs": [
     "https://www.linkedin.com/company/anjaneya-ai"
   ],
@@ -53,6 +61,15 @@ export const website = {
 
 const pageNodes = {
   "index": [
+    {
+      "@type": "WebPage",
+      "@id": `${SITE}/#webpage`,
+      "url": `${SITE}/`,
+      "name": "Avishkar AI",
+      "isPartOf": { "@id": `${SITE}/#site` },
+      "about": { "@id": `${SITE}/#org` },
+      "inLanguage": "en"
+    },
     {
       "@type": "FAQPage",
       "mainEntity": [
@@ -198,6 +215,20 @@ const pageNodes = {
           "item": `${SITE}/journey`
         }
       ]
+    },
+    {
+      "@type": "Person",
+      "name": "Shivang Kumar",
+      "jobTitle": "Co-founder",
+      "worksFor": { "@id": `${SITE}/#org` },
+      "sameAs": "https://www.linkedin.com/in/shivng/"
+    },
+    {
+      "@type": "Person",
+      "name": "Arpit Sharma",
+      "jobTitle": "Co-founder",
+      "worksFor": { "@id": `${SITE}/#org` },
+      "sameAs": "https://www.linkedin.com/in/arpitsharmawriting/"
     }
   ],
   "pilot": [
@@ -293,6 +324,25 @@ const pageNodes = {
         }
       ]
     }
+  ],
+  "accessibility": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/` },
+        { "@type": "ListItem", "position": 2, "name": "Accessibility", "item": `${SITE}/accessibility` }
+      ]
+    }
+  ],
+  "contact": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/` },
+        { "@type": "ListItem", "position": 2, "name": "Contact", "item": `${SITE}/contact` }
+      ]
+    },
+    { "@type": "ContactPage", "name": "Contact Avishkar AI", "url": `${SITE}/contact` }
   ]
 };
 

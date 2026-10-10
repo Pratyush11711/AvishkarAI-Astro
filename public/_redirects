@@ -5,3 +5,9 @@
 /pilot.html     /pilot     301
 /privacy.html   /privacy   301
 /terms.html     /terms     301
+/about            /journey   301
+/privacy-policy   /privacy   301
+/terms-of-service /terms     301
+/login            /          302
+/dashboard        /          302
+/admin            /          302

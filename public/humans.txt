@@ -1,0 +1,11 @@
+/* TEAM */
+Founders: Shivang Kumar, Arpit Sharma
+Company: Anjaneyaai Technologies Private Limited
+Contact: arpit@avishkarai.com
+Location: Bengaluru, India
+
+/* SITE */
+Products: Verdicta, Veritune
+Last update: 2026-10-10
+Standards: HTML, CSS, JavaScript
+Components: Astro

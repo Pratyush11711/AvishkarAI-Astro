@@ -81,7 +81,7 @@ $$('form[data-wiz]').forEach(function(f){
     var hp=$('[name="company_website"]',f);
     var payload={formType:'pilot',name:data.name,email:data.email,phone:data.phone,role:data.role,company:data.company,industry:data.industry,agents:data.agents,callMinutes:data.volume,languages:arr('languages'),product:data.product,priorities:arr('focus'),hasScorecard:data.scorecard,sharingMethod:data.share,deployment:data.deploy,startTimeline:data.start,consent:true,company_website:hp?hp.value:''};
     sending=true;err.textContent='';busy(sub,true);
-    postForm(payload).then(function(){sending=false;busy(sub,false);done(data)},function(x){sending=false;busy(sub,false);err.textContent=x&&x.shown&&x.message?x.message:FAIL;f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')});
+    postForm(payload).then(function(){sending=false;busy(sub,false);done(data)},function(x){sending=false;busy(sub,false);err.textContent=!navigator.onLine?'You\'re offline. Your answers are still on this page. Send again when you\'re back online.':(x&&x.shown&&x.message?x.message:FAIL);f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')});
   });
   function done(data){
     var ep=f.getAttribute('data-endpoint');

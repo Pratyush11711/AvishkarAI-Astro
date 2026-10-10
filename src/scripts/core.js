@@ -31,11 +31,15 @@ function box(el){var c=el._bx;if(!c||c.v!==LV){var t=0,l=0,n=el;while(n){t+=n.of
 var AV={near:near,box:box,$:$,$$:$$,RM:RM,FINE:FINE,clamp:clamp,lerp:lerp,sm:sm,eio:eio,eo:eo,expo:expo,hex:hex,tok:tok,isDark:isDark,tween:tween,MARK_D:MARK_D,
   on:function(f){loops.push(f)},ready:function(f){readyFns.push(f)},theme:function(f){themeHooks.push(f)},mx:-100,my:-100,pvx:0,vel:0,intro:null};
 
-/* ---------- favicon (follows the browser/OS theme) + tab title ---------- */
-var fav=document.createElement('link');fav.rel='icon';fav.type='image/svg+xml';document.head.appendChild(fav);
-var awayFav=false,mqd=matchMedia('(prefers-color-scheme: dark)');
-function setFav(){var c=awayFav?'#FF5B1F':(mqd.matches?'#FFFFFF':'#0C0C0D');fav.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 26 310 292"><path fill="'+c+'" fill-rule="evenodd" d="'+MARK_D+'"/></svg>')}
-setFav();if(mqd.addEventListener)mqd.addEventListener('change',setFav);
+/* ---------- favicon + tab title ----------
+   On the page the mark stays white. Leaving the tab blinks it orange, then white. */
+var fav=document.querySelector('link[rel="icon"]');
+if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav)}
+fav.type='image/svg+xml';
+document.querySelectorAll('link[rel="icon"]').forEach(function(n){if(n!==fav)n.remove()});
+var awayFav=false;
+function setFav(){var c=awayFav?'#FF5B1F':'#FFFFFF';fav.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 26 310 292"><path fill="'+c+'" fill-rule="evenodd" d="'+MARK_D+'"/></svg>')}
+setFav();
 var baseTitle=document.title,away=['Your calls are still talking','97 in 100 calls go unheard','Your free pilot is waiting','Come back, every call counts'],tt=null,tk2=0,awayT=null;
 function blink(){var msg=away[Math.floor(tk2/3)%away.length],fr=['●','○'][tk2%2];document.title=fr+' '+msg;awayFav=tk2%2===0;setFav();tk2++}
 document.addEventListener('visibilitychange',function(){
@@ -504,7 +508,7 @@ var lastT=performance.now(),lsy=-1,lsw=0,lsh=0,lsv=-1,lnk=0;
    Loops that only depend on scroll position return early when it is false. */
 function loop(now){var dt=Math.min((now-lastT)/1000,.05);lastT=now;
   var sy=scrollY;AV.sd=sy!==lsy||innerWidth!==lsw||innerHeight!==lsh||LV!==lsv||nearKick!==lnk;lnk=nearKick;lsy=sy;lsw=innerWidth;lsh=innerHeight;lsv=LV;
-  for(var i=0,n=AV.paused?2:loops.length;i<n;i++){try{loops[i](now,dt)}catch(e){console.warn(e);loops.splice(i,1);i--}}requestAnimationFrame(loop)}
+  for(var i=0,n=(AV.paused||document.hidden)?2:loops.length;i<n;i++){try{loops[i](now,dt)}catch(e){console.warn(e);loops.splice(i,1);i--}}requestAnimationFrame(loop)}
 AV.start=function(){
   requestAnimationFrame(loop);onScroll();
   var booted=false;function done(){if(booted)return;booted=true;B.classList.add('ready');readyFns.forEach(function(f){try{f()}catch(e){console.warn(e)}})}

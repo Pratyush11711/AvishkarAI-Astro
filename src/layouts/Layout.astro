@@ -1,6 +1,7 @@
 ---
 import '../styles/tailwind.css';
 import '../styles/base.css';
+import '../styles/pwa.css';
 import SiteHead from '../components/SiteHead.astro';
 import SvgSprite from '../components/SvgSprite.astro';
 import Overlays from '../components/Overlays.astro';
@@ -29,5 +30,8 @@ const gap = mainClass ? '' : '\n';
 <body>
 <SvgSprite /><Overlays /><Header current={page} pilotHref={pilotHref} /><slot name="before-main" /><main class={mainClass}>{gap}<slot />{gap}</main>{gap}<slot name="after-main" />{gap}<Footer home={home} pilotHref={pilotHref} />{page !== 'pilot' && <Dock pilotHref={pilotHref} />}<PilotModal /><CookieBanner />
 <slot name="scripts" />
+<script>
+  import '../scripts/pwa.js';
+</script>
 </body>
 </html>

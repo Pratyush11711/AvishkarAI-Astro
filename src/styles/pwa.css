@@ -1,0 +1,6 @@
+/* Offline chip and image placeholder. Hidden unless the script adds them, so the designed pages are unchanged. */
+.av-net{position:fixed;top:calc(78px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:75;max-width:min(240px,calc(100vw - 32px));margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--mut);font:400 12px/1.3 Poppins,ui-sans-serif,system-ui,sans-serif;pointer-events:none}
+img.av-wait{background-image:linear-gradient(100deg,var(--faint),var(--line),var(--faint));background-size:200% 100%;background-repeat:no-repeat}
+@media(prefers-reduced-motion:no-preference){img.av-wait{animation:avwait 1.2s linear infinite}}
+@keyframes avwait{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){img.av-wait{animation:none}}
