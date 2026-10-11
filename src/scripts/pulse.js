@@ -3,7 +3,7 @@
    keyboard focus, and resumes afterwards. Nav, dock, footer and LinkedIn buttons are not included. */
 (function () {
   var EVERY = 4000;      /* gap between pulses of one button */
-  var HOLD = 680;        /* the 0.6 s flip lands on orange and turns straight back, with almost no pause */
+  var HOLD = 700;        /* the 0.6 s flip lands on orange and turns straight back, with almost no pause */
   var FIRST = 2500;      /* first pulse after the button becomes visible */
   var GAP = 1600;        /* minimum time between pulses of different buttons */
   var lastPulse = 0;
