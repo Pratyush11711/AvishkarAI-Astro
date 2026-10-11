@@ -1,5 +1,13 @@
-/* Brief replay of the existing twist-button hover, on a few conversion buttons only. */
+/* Replays the existing twist-button hover animation by itself, every 4 seconds, on a few conversion buttons only
+   (hero CTA, free pilot card, closing band). It pauses while the real pointer is on the button or the button has
+   keyboard focus, and resumes afterwards. Nav, dock, footer and LinkedIn buttons are not included. */
 (function () {
+  var EVERY = 4000;      /* gap between pulses of one button */
+  var HOLD = 900;        /* how long the hover state is held (the same animation as a real hover) */
+  var FIRST = 2500;      /* first pulse after the button becomes visible */
+  var GAP = 1600;        /* minimum time between pulses of different buttons */
+  var lastPulse = 0;
+
   function blocked() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
     if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return true;
@@ -10,6 +18,7 @@
     if (net && (net.saveData || net.effectiveType === '2g' || net.effectiveType === 'slow-2g')) return true;
     return false;
   }
+
   var scrolling = false;
   var scrollT;
   addEventListener('scroll', function () {
@@ -27,42 +36,48 @@
     ].filter(Boolean);
   }
 
-  function arm(el, stagger) {
+  function arm(el) {
     if (el._pulse) return;
     el._pulse = 1;
-    var n = 0;
     var seen = false;
+    var hot = false;
     var timer;
-    function stop() { el._stop = 1; clearTimeout(timer); }
-    el.addEventListener('pointerenter', stop);
-    el.addEventListener('focus', stop);
-    el.addEventListener('click', stop);
+
+    /* only real input counts (synthetic events from this script are not trusted) */
+    el.addEventListener('pointerenter', function (e) { if (e.isTrusted) hot = true; });
+    el.addEventListener('pointerleave', function (e) { if (e.isTrusted) hot = false; });
+    el.addEventListener('focus', function () { hot = true; });
+    el.addEventListener('blur', function () { hot = false; });
+
     function kick(ms) {
       clearTimeout(timer);
-      if (el._stop || n >= 4) return;
       timer = setTimeout(run, ms);
     }
+
     function run() {
-      if (!seen || el._stop || n >= 4) return;
-      if (blocked() || scrolling) { kick(1200); return; }
+      if (!el.isConnected) return;
+      if (!seen) return;                              /* resumes when it scrolls into view */
+      if (hot || blocked() || scrolling) { kick(1000); return; }
+      var wait = GAP - (performance.now() - lastPulse);
+      if (wait > 0) { kick(wait + 50); return; }      /* never two buttons at once */
+      lastPulse = performance.now();
       el.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'mouse' }));
       setTimeout(function () {
-        el.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'mouse' }));
-      }, 900);
-      n += 1;
-      if (n < 4) kick(5600 + Math.random() * 2200);
+        if (!hot) el.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'mouse' }));
+      }, HOLD);
+      kick(EVERY);
     }
+
     var io = new IntersectionObserver(function (entries) {
       seen = entries[0].isIntersecting;
-      if (seen) kick(n ? 0 : 2500 + stagger);
+      if (seen) kick(FIRST);
       else clearTimeout(timer);
     }, { threshold: 0.55 });
     io.observe(el);
-    el._pulseIo = io;
   }
 
   function boot() {
-    list().forEach(function (el, i) { arm(el, i * 1600); });
+    list().forEach(arm);
   }
   boot();
   document.addEventListener('astro:page-load', boot);
