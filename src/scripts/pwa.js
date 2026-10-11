@@ -127,6 +127,17 @@
   addEventListener('load', function () {
     if (!('serviceWorker' in navigator)) return;
     if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
+    /* Dev module URLs are not hashed, so a worker would serve stale scripts. On localhost, other projects share
+       the origin too. Remove any worker and its caches there instead of registering one. */
+    if (import.meta.env.DEV || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) {
+        var had = rs.length > 0;
+        rs.forEach(function (r) { r.unregister(); });
+        if (window.caches) caches.keys().then(function (ks) { ks.forEach(function (k) { if (/^av-/.test(k)) caches.delete(k); }); });
+        if (had && navigator.serviceWorker.controller) location.reload();
+      }).catch(function () {});
+      return;
+    }
     navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
     warm();
   });

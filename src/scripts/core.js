@@ -38,7 +38,7 @@ AV.later=function(fn,t){AV.ready(function(){if(window.requestIdleCallback)reques
    On the page the mark stays white. Leaving the tab blinks it orange, then white. */
 var awayFav=false;
 /* The favicon has no background, just the mark. It is white on a dark tab strip and dark on a light one,
-   so it always reads. The link is looked up every time because a page swap replaces the <head> icon link. */
+   so it always reads. */
 function setFav(){
   var fav=document.querySelector('link[rel="icon"]');
   if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav)}
@@ -51,16 +51,8 @@ function setFav(){
   tc.content=tile}
 setFav();
 themeHooks.push(setFav);
-/* A swap rebuilds <html> from the new page, which has no theme. Carry the live state over before it happens. */
-document.addEventListener('astro:before-swap',function(e){
-  var nr=e.newDocument.documentElement;
-  Array.prototype.slice.call(root.attributes).forEach(function(a){if(a.name.indexOf('data-astro')===0||a.name==='lang')return;nr.setAttribute(a.name,a.value)});
-  var t=root.getAttribute('data-theme');if(t)nr.setAttribute('data-theme',t);
-});
-document.addEventListener('astro:after-swap',function(){awayFav=false;setFav()});
-document.addEventListener('astro:page-load',function(){baseTitle=document.title});
 var baseTitle=document.title,away=['Your calls are still talking','97 in 100 calls go unheard','Your free pilot is waiting','Come back, every call counts'],tt=null,tk2=0,awayT=null;
-function blink(){var msg=away[Math.floor(tk2/3)%away.length],fr=['●','○'][tk2%2];document.title=fr+' '+msg;awayFav=tk2%2===0;setFav();tk2++}
+function blink(){var msg=away[Math.floor(tk2/3)%away.length],fr=['\u25CF','\u25CB'][tk2%2];document.title=fr+' '+msg;awayFav=tk2%2===0;setFav();tk2++}
 document.addEventListener('visibilitychange',function(){
   if(document.hidden){tk2=0;blink();clearInterval(tt);tt=setInterval(blink,1000)}
   else{clearInterval(tt);awayFav=false;setFav();document.title='Welcome back to Avishkar AI';clearTimeout(awayT);awayT=setTimeout(function(){document.title=baseTitle},1800)}
@@ -75,6 +67,8 @@ AV.goTo=function(h){var el=h==='#top'?null:$(h);var y=el?el.getBoundingClientRec
 document.addEventListener('click',function(e){
   var a=e.target.closest&&e.target.closest('a[href]');if(!a||e.defaultPrevented)return;var h=a.getAttribute('href');
   if(h.charAt(0)==='#'&&h.length>1){e.preventDefault();B.classList.remove('mo');if(AV.beforeAnchor){AV.beforeAnchor(a,function(){AV.goTo(h)});return}AV.goTo(h);return}
+  /* our own pages: play the curtain, then a normal full page load */
+  if(/^(?:(?:index|verdicta|veritune|journey|pilot|privacy|terms|accessibility|contact)\.html|\/(?:verdicta|veritune|journey|pilot|privacy|terms|accessibility|contact)?)(#.*)?$/.test(h)&&!a.target&&!a.hasAttribute('download')&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey&&e.button===0){e.preventDefault();B.classList.remove('mo');leave(h)}
 });
 
 /* ---------- theme toggle ---------- */
@@ -108,11 +102,6 @@ if(FINE&&cur){root.classList.add('cc');
   },{passive:true});
   document.addEventListener('mouseleave',function(){cur.classList.remove('on')});
 }else{addEventListener('pointermove',function(e){AV.mx=e.clientX;AV.my=e.clientY},{passive:true})}
-/* a page swap brings a fresh #cur element, so point the cursor at it and show it straight away */
-document.addEventListener('astro:after-swap',function(){
-  cur=$('#cur');bub=$('#bub');arw=cur&&$('.arw',cur);
-  if(FINE&&cur){root.classList.add('cc');if(AV.mx>-50){cur.classList.add('on');cur.style.transform='translate3d('+ax+'px,'+ay+'px,0)'}}
-});
 AV.clearCursor=function(){if(cur)cur.classList.remove('cl','hov')};
 loops.push(function(){var mx=AV.mx,my=AV.my;AV.pvx=lerp(AV.pvx,(mx-pmx),.2);pmx=mx;if(!FINE||!cur)return;
   /* settled: skip the style writes so an idle page does no style work */
@@ -131,7 +120,7 @@ function twist(b){
   var lab=b.getAttribute('data-label')||'',n=b.classList.contains('sm')?10:(innerWidth<600?10:14),c='<span class="tw-c"><span>'+lab+'</span><span class="tw-ic">'+ARW+'</span></span>',h='<span class="tw-size" aria-hidden="true">'+c+'</span>';
   for(var i=0;i<n;i++)h+='<span class="sl" aria-hidden="true" style="--i:'+i+';--dl:'+(Math.min(i,n-1-i)*48)+'ms"><span class="fc f">'+c+'</span><span class="fc b">'+c+'</span></span>';
   b.innerHTML=h+'<span class="sr">'+lab+'</span>';b.style.setProperty('--n',n);b.setAttribute('aria-label',lab);
-  var k=0,sl=$$('.sl',b),armed=false,dT=null,hold=600+Math.ceil(n/2)*48+120;
+  var k=0,sl=$$('.sl',b),armed=false,dT=null,hold=600+Math.ceil(n/2)*48+60;
   function size(){szReq(b)}
   size();if(window.ResizeObserver)new ResizeObserver(size).observe(b);
   function set(){sl.forEach(function(s){s.style.setProperty('--r',(k*180)+'deg')})}
@@ -140,13 +129,14 @@ function twist(b){
      looks identical (0 or a full turn), so nothing visible changes. */
   function snap(fn){b.classList.add('tw-nt');fn();void b.offsetWidth;b.classList.remove('tw-nt')}
   function arm(){clearTimeout(dT);if(armed)return;armed=true;snap(function(){b.classList.add('tw3')})}
-  function disarm(){dT=setTimeout(function(){if(k%2===0&&armed){armed=false;snap(function(){b.classList.remove('tw3')})}},hold)}
-  function on(){arm();if(k%2===0){k++;set()}}function off(){if(k%2===1){k++;set()}disarm()}
+  function disarm(){clearTimeout(dT);dT=setTimeout(function(){if(k%2===0&&armed){armed=false;snap(function(){b.classList.remove('tw3')})}},hold)}
+  /* the same flip for a real hover and for the automatic pulse: to orange, and back when the pointer leaves */
+  function on(){arm();if(k%2===1)k++;k++;set();disarm()}function off(){if(k%2===1){k++;set()}disarm()}
   /* Hover flips the button, keyboard focus flips it, a click does not. Without this, clicking moved focus
      (into a form or popup), the blur flipped the button back mid-click, and it rotated the wrong way. */
   var hov=false;
-  b.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse')return;hov=true;on()});
-  b.addEventListener('pointerleave',function(e){if(e.pointerType!=='mouse')return;hov=false;off()});
+  b.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse')return;if(!e.isTrusted&&hov)return;if(e.isTrusted)hov=true;on()});
+  b.addEventListener('pointerleave',function(e){if(e.pointerType!=='mouse')return;if(!e.isTrusted){if(!hov)off();return}hov=false;off()});
   b.addEventListener('focus',function(){var fv=false;try{fv=b.matches(':focus-visible')}catch(x){}if(fv)on()});
   b.addEventListener('blur',function(){if(!hov)off()});
   /* back to rest instantly (used when a popup opens or closes and the button is hidden under the pointer) */
@@ -209,27 +199,34 @@ if(dock){var tk=$$('.tick span',dock),ti=0;
 /* ---------- curtain (home page first visit only) ---------- */
 var L=$('#ld');
 function wavePath(el,y,c){el.setAttribute('d','M0 0H100V'+y.toFixed(2)+'Q50 '+(y+c).toFixed(2)+' 0 '+y.toFixed(2)+'Z')}
-AV.lift=function(done){if(!L){done&&done();return}L.classList.add('out');var p1=$('.p1',L),p2=$('.p2',L),t0=performance.now(),fired=false;
+AV.lift=function(done){covered=false;if(!L){done&&done();return}L.classList.add('out');var p1=$('.p1',L),p2=$('.p2',L),t0=performance.now(),fired=false;
   (function f(n){var t=(n-t0)/1000,a=eio(t/.85),b=eio((t-.1)/.85),y2=100-120*a,y1=100-120*b;wavePath(p2,y2,Math.sin(a*Math.PI)*-26);wavePath(p1,y1,Math.sin(b*Math.PI)*-26);
     if(t>.25&&!fired){fired=true;B.classList.add('ready')}if(t<1)requestAnimationFrame(f);else{L.classList.add('gone');done&&done()}})(t0)};
 /* default: no loader, the page is ready the moment scripts run */
 function instant(done){if(L)L.classList.add('gone');var br=$('#brand');if(br)br.classList.remove('wait');done()}
+/* draws a shape off-screen and returns the filled pixel positions, reading only the rectangle r=[x,y,w,h] around it */
+function sampleIn(W,H,draw,step,r){var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d',{willReadFrequently:true});x.fillStyle='#000';draw(x);
+  var rx=clamp(Math.floor(r[0]),0,W-1),ry=clamp(Math.floor(r[1]),0,H-1),rw=clamp(Math.ceil(r[2]),1,W-rx),rh=clamp(Math.ceil(r[3]),1,H-ry);
+  var d=x.getImageData(rx,ry,rw,rh).data,p=[];for(var y=0;y<rh;y+=step)for(var X=0;X<rw;X+=step)if(d[(y*rw+X)*4+3]>110)p.push(X+rx,y+ry);return p}
+/* particle budget for the loaders: the first frames are always slow while the page boots, so they are ignored.
+   After that, each window of 30 frames averaging under about 35 fps trims 20%, never below the floor. */
+function thinner(n,floor){var c=n,last=0,k=0,sum=0,cnt=0;return function(now){var d=last?now-last:0;last=now;
+  if(++k<=12||d>250)return c;sum+=d;if(++cnt>=30){if(sum/cnt>28&&c>floor)c=Math.max(floor,c*.8|0);sum=0;cnt=0}return c}}
 /* quick particle loader for page to page navigation: the mark and name form in the centre, then fly into the nav */
 var SP=1.9;
 function particleIntro(done){
   var LP=$('#lp'),br=$('#brand');if(!L||RM||!LP||!br)return AV.lift(function(){instant(done)});
-  var fr=document.fonts&&document.fonts.load?Promise.race([document.fonts.load('400 40px Poppins'),new Promise(function(r){setTimeout(r,500)})]):Promise.resolve();
+  var fr=document.fonts&&document.fonts.load?Promise.race([document.fonts.load('400 40px Poppins'),new Promise(function(r){setTimeout(r,350)})]):Promise.resolve();
   fr.then(function(){
     var ctx=LP.getContext('2d'),W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);LP.width=W*dpr;LP.height=H*dpr;LP.style.display='block';
     var mp=new Path2D(MARK_D);
     function mark(x,cx,cy,h){var s=h/272;x.save();x.translate(cx-157*s,cy-172*s);x.scale(s,s);x.fill(mp,'evenodd');x.restore()}
     function lock(x,x0,cy,fs){x.font='400 '+fs+'px Poppins, sans-serif';try{x.letterSpacing=(-.035*fs)+'px'}catch(e){}var mh=fs*1.33,mw=mh*290/272;mark(x,x0+mw/2,cy,mh);x.textBaseline='middle';x.fillText('Avishkar AI',x0+mw+fs*.26,cy+fs*.06)}
-    function sample(draw,step){var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.fillStyle='#000';draw(x);var d=x.getImageData(0,0,W,H).data,p=[];for(var y=0;y<H;y+=step)for(var X=0;X<W;X+=step)if(d[(y*W+X)*4+3]>110)p.push(X,y);return p}
     var fs=Math.min(W*.085,76),tmp=document.createElement('canvas').getContext('2d');tmp.font='400 '+fs+'px Poppins, sans-serif';try{tmp.letterSpacing=(-.035*fs)+'px'}catch(e){}
     var tot=fs*1.33*290/272+fs*.26+tmp.measureText('Avishkar AI').width;
-    var A=sample(function(x){lock(x,(W-tot)/2,H/2,fs)},2);
-    var mk=$('.mk',br).getBoundingClientRect(),bfs=parseFloat(getComputedStyle(br).fontSize);
-    var C=sample(function(x){lock(x,mk.left,mk.top+mk.height/2,bfs)},1);
+    var A=sampleIn(W,H,function(x){lock(x,(W-tot)/2,H/2,fs)},2,[(W-tot)/2-12,H/2-fs*1.2,tot+24,fs*2.4]);
+    var mk=$('.mk',br).getBoundingClientRect(),bfs=parseFloat(getComputedStyle(br).fontSize),bR=br.getBoundingClientRect();
+    var C=sampleIn(W,H,function(x){lock(x,mk.left,mk.top+mk.height/2,bfs)},1,[0,0,bR.right+40,bR.bottom+40]);
     if(!A.length||!C.length){LP.style.display='none';AV.lift(function(){instant(done)});return}
     var N=W<700?1600:3000,P=new Float32Array(N*8);
     for(var i=0;i<N;i++){var o=i*8,a=(Math.random()*A.length/2|0)*2,c=(Math.random()*C.length/2|0)*2,an=Math.random()*6.283,rr=Math.max(W,H)*(.3+Math.random()*.5);
@@ -237,13 +234,15 @@ function particleIntro(done){
     var t0=performance.now(),fg=tok('--fg'),ac=tok('--acc'),lifted=false,fin=false;
     function finish(){if(fin)return;fin=true;LP.style.display='none';br.classList.remove('wait');L.classList.add('gone');done()}
     var XY=new Float32Array(N*2);
-    (function f(n){var T=(n-t0)*SP;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1-sm((T-2150)/200);
-      for(var i=0;i<N;i++){var o=i*8,d=P[o+6],k,x,y;
+    var ND=root.getAttribute('data-perf')==='low'?Math.min(N,1400):N,thin=thinner(ND,W<700?900:1600);
+    (function f(n){ND=thin(n);
+      var T=(n-t0)*SP;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1-sm((T-2150)/200);
+      for(var i=0;i<ND;i++){var o=i*8,d=P[o+6],k,x,y;
         if(T<1350){k=eo((T-d*300)/850);x=lerp(P[o],P[o+2],k);y=lerp(P[o+1],P[o+3],k);var tu=(1-k)*30;x+=Math.sin(P[o+3]*.05+T*.006)*tu;y+=Math.cos(P[o+2]*.05+T*.005)*tu}
         else{k=eio((T-1350-d*200)/700);x=lerp(P[o+2],P[o+4],k);y=lerp(P[o+3],P[o+5],k)}
         XY[i*2]=x;XY[i*2+1]=y}
       /* one fill per colour instead of a style switch per particle */
-      var hot=T<1500;for(var pass=0;pass<(hot?2:1);pass++){ctx.beginPath();for(i=0;i<N;i++){if(hot&&(P[i*8+7]?1:0)!==pass)continue;ctx.rect(XY[i*2],XY[i*2+1],1.3,1.3)}ctx.fillStyle=pass?ac:fg;ctx.fill()}
+      var hot=T<1500;for(var pass=0;pass<(hot?2:1);pass++){ctx.beginPath();for(i=0;i<ND;i++){if(hot&&(P[i*8+7]?1:0)!==pass)continue;ctx.rect(XY[i*2],XY[i*2+1],1.3,1.3)}ctx.fillStyle=pass?ac:fg;ctx.fill()}
       ctx.globalAlpha=1;
       if(T>1450&&!lifted){lifted=true;AV.lift()}
       if(T>2100)br.classList.remove('wait');
@@ -262,32 +261,34 @@ function fullIntro(done){
   var cnt=$('#cnt'),bar=$('#lbar'),stx=$('#stx'),words=['Listening','Scoring','Reading','Ready'];
   var markP=new Path2D(MARK_D);
   function drawMark(x,cx,cy,h){var s=h/272;x.save();x.translate(cx-(12+145)*s,cy-(36+136)*s);x.scale(s,s);x.fill(markP,'evenodd');x.restore()}
-  function sample(draw,step){var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.fillStyle='#000';draw(x);var d=x.getImageData(0,0,W,H).data,p=[];for(var y=0;y<H;y+=step)for(var X=0;X<W;X+=step){if(d[(y*W+X)*4+3]>110)p.push(X,y)}return p}
-  var fontOk=document.fonts&&document.fonts.load?Promise.race([document.fonts.load('300 100px Poppins'),document.fonts.load('400 40px Poppins'),new Promise(function(r){setTimeout(r,1200)})]):Promise.resolve();
+  function sample(draw,step,r){return sampleIn(W,H,draw,step,r||[0,0,W,H])}
+  var fontOk=document.fonts&&document.fonts.load?Promise.race([document.fonts.load('300 100px Poppins'),document.fonts.load('400 40px Poppins'),new Promise(function(r){setTimeout(r,700)})]):Promise.resolve();
   var started=false,finished=false;
   function finish(){if(finished)return;finished=true;L.classList.add('gone');LP.style.display='none';br.classList.remove('wait');done()}
   fontOk.then(start,start);setTimeout(finish,9000);
   function start(){if(started)return;started=true;
-    var mob=W<700,N=mob?3000:6500;
-    var mh=Math.min(H*.34,W*.42),A=sample(function(x){drawMark(x,W/2,H/2,mh)},2);
-    var tB=sample(function(x){x.font='300 100px Poppins, sans-serif';var w=x.measureText('Avishkar AI').width,fs=100*Math.min(W*.82,1100)/w;x.font='300 '+fs+'px Poppins, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Avishkar AI',W/2,H/2)},2);
+    var mob=W<700,N=root.getAttribute('data-perf')==='low'?(mob?1800:3200):mob?3000:6500,ND=N,thin=thinner(N,mob?1500:2600);
+    var mh=Math.min(H*.34,W*.42),A=sample(function(x){drawMark(x,W/2,H/2,mh)},2,[W/2-mh*.7,H/2-mh*.7,mh*1.4,mh*1.4]);
+    var tB=sample(function(x){x.font='300 100px Poppins, sans-serif';var w=x.measureText('Avishkar AI').width,fs=100*Math.min(W*.82,1100)/w;x.font='300 '+fs+'px Poppins, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Avishkar AI',W/2,H/2)},2,[0,H/2-Math.min(W*.2,280),W,Math.min(W*.4,560)]);
     var mkR=$('.mk',br).getBoundingClientRect(),wdR=$('.wd',br).getBoundingClientRect(),bfs=parseFloat(getComputedStyle(br).fontSize);
-    var C=sample(function(x){drawMark(x,mkR.left+mkR.width/2,mkR.top+mkR.height/2,mkR.height);x.font='400 '+bfs+'px Poppins, sans-serif';x.textBaseline='middle';try{x.letterSpacing=(-.035*bfs)+'px'}catch(e){}x.fillText('Avishkar AI',wdR.left,mkR.top+mkR.height/2+bfs*.06)},1);
+    var C=sample(function(x){drawMark(x,mkR.left+mkR.width/2,mkR.top+mkR.height/2,mkR.height);x.font='400 '+bfs+'px Poppins, sans-serif';x.textBaseline='middle';try{x.letterSpacing=(-.035*bfs)+'px'}catch(e){}x.fillText('Avishkar AI',wdR.left,mkR.top+mkR.height/2+bfs*.06)},1,[0,0,wdR.right+40,Math.max(mkR.bottom,wdR.bottom)+40]);
     if(!A.length||!tB.length||!C.length){AV.lift(finish);return}
     var P=new Float32Array(N*12),XY=new Float32Array(N*3);
     for(var i=0;i<N;i++){var o=i*12,a=(Math.random()*A.length/2|0)*2,b=(Math.random()*tB.length/2|0)*2,c=(Math.random()*C.length/2|0)*2,ang=Math.random()*6.283,rr=Math.max(W,H)*(.4+Math.random()*.6);
       P[o]=W/2+Math.cos(ang)*rr;P[o+1]=H/2+Math.sin(ang)*rr;P[o+2]=A[a];P[o+3]=A[a+1];P[o+4]=tB[b];P[o+5]=tB[b+1];P[o+6]=C[c];P[o+7]=C[c+1];P[o+8]=Math.random();P[o+9]=Math.random()*6.283;P[o+10]=Math.random()<.07?1:0;P[o+11]=.6+Math.random()*1.1}
-    var t0=performance.now(),END=4300,lifted=false,fg=tok('--fg'),ac=tok('--acc'),lastPr=-1;
+    var t0=0,END=4300,lifted=false,fg=tok('--fg'),ac=tok('--acc'),lastPr=-1;
     function frame(now){
-      var T=(now-t0)*1.2*(window.__ldScale||1);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+      if(!t0)t0=now;
+      ND=thin(now);
+      var T=(now-t0)*1.4*(window.__ldScale||1);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
       ctx.globalAlpha=1-sm((T-4050)/250);
-      for(var i=0;i<N;i++){var o=i*12,d=P[o+8],sd=P[o+9],x,y,k=0;
+      for(var i=0;i<ND;i++){var o=i*12,d=P[o+8],sd=P[o+9],x,y,k=0;
         if(T<1700){k=eo((T-d*450)/1150);x=lerp(P[o],P[o+2],k);y=lerp(P[o+1],P[o+3],k);if(k>=1){x+=Math.sin(T*.004+sd)*.6;y+=Math.cos(T*.004+sd)*.6}}
         else if(T<3150){k=eio((T-1700-d*260)/900);var tu=Math.sin(k*Math.PI)*(mob?40:80);x=lerp(P[o+2],P[o+4],k)+Math.sin(P[o+3]*.03+T*.006+sd)*tu;y=lerp(P[o+3],P[o+5],k)+Math.cos(P[o+2]*.025+T*.005+sd)*tu}
         else{k=eio((T-3150-d*300)/780);x=lerp(P[o+4],P[o+6],k);y=lerp(P[o+5],P[o+7],k)}
         XY[i*3]=x;XY[i*3+1]=y;XY[i*3+2]=P[o+11]*(T>3150?lerp(1,.7,k):1)}
       /* batched: one path and one fill per colour */
-      var hot=T<3300;for(var pass=0;pass<(hot?2:1);pass++){ctx.beginPath();for(i=0;i<N;i++){if(hot&&(P[i*12+10]?1:0)!==pass)continue;var s=XY[i*3+2];ctx.rect(XY[i*3],XY[i*3+1],s,s)}ctx.fillStyle=pass?ac:fg;ctx.fill()}
+      var hot=T<3300;for(var pass=0;pass<(hot?2:1);pass++){ctx.beginPath();for(i=0;i<ND;i++){if(hot&&(P[i*12+10]?1:0)!==pass)continue;var s=XY[i*3+2];ctx.rect(XY[i*3],XY[i*3+1],s,s)}ctx.fillStyle=pass?ac:fg;ctx.fill()}
       ctx.globalAlpha=1;
       var pr=clamp(T/END,0,1),pc=Math.round(pr*100);if(pc!==lastPr){lastPr=pc;cnt.textContent=String(pc).padStart(3,'0');bar.style.setProperty('--p',pr);stx.textContent=words[Math.min(3,Math.floor(pr*3.999))]}
       if(T>3250&&!lifted){lifted=true;AV.lift()}
@@ -306,26 +307,18 @@ try{if(sessionStorage.getItem('av-nav')==='1')cameFromSite=true;sessionStorage.r
 try{if(window.name==='av-nav')cameFromSite=true;if(window.name==='av-nav')window.name=''}catch(e){}
 try{if(document.referrer&&location.origin!=='null'&&new URL(document.referrer).origin===location.origin)cameFromSite=true}catch(e){}
 try{var nt=performance.getEntriesByType('navigation')[0];if(nt&&nt.type==='back_forward')cameFromSite=true;if(nt&&nt.type==='reload')cameFromSite=false}catch(e){}
-function leave(h){try{sessionStorage.setItem('av-nav','1')}catch(e){}try{window.name='av-nav'}catch(e){}if(!L||RM){location.href=h;return}
-  L.classList.remove('gone','out');var p1=$('.p1',L),p2=$('.p2',L),t0=performance.now(),D=.55;
-  (function f(n){var t=(n-t0)/1000,b=eio(t/D),a=eio((t-.08)/D),y1=-20+120*b,y2=-20+120*a;
+/* Page to page: the curtain sweeps up (about half a second), then a normal full page load.
+   One navigation at a time; if the browser does not leave (Stop pressed, a download, a cancelled request)
+   the curtain lifts again after a few seconds, and coming back with Back always clears it. */
+var leaving=false,leaveT=0;
+function hideCurtain(){clearTimeout(leaveT);leaving=false;if(L){L.classList.add('gone');L.classList.remove('out');L.style.pointerEvents=''}B.classList.add('ready');var br=$('#brand');if(br)br.classList.remove('wait')}
+function leave(h){if(leaving)return;leaving=true;try{sessionStorage.setItem('av-nav','1')}catch(e){}try{window.name='av-nav'}catch(e){}
+  if(!L||RM){location.href=h;return}
+  L.classList.remove('gone','out');var p1=$('.p1',L),p2=$('.p2',L),t0=performance.now(),D=.5;
+  (function f(n){var t=(n-t0)/1000,b=eio(t/D),a=eio((t-.07)/D),y1=-20+120*b,y2=-20+120*a;
     p1.setAttribute('d','M0 100H100V'+(100-y1).toFixed(2)+'Q50 '+(100-y1-Math.sin(b*Math.PI)*22).toFixed(2)+' 0 '+(100-y1).toFixed(2)+'Z');
     p2.setAttribute('d','M0 100H100V'+(100-y2).toFixed(2)+'Q50 '+(100-y2-Math.sin(a*Math.PI)*22).toFixed(2)+' 0 '+(100-y2).toFixed(2)+'Z');
-    if(t<D+.1)requestAnimationFrame(f);else location.href=h})(t0)}
-var ldState='idle',ldShow=0,ldMax=0;
-function curtain(){return document.getElementById('ld')}
-function hideCurtain(){clearTimeout(ldShow);clearTimeout(ldMax);var el=curtain();if(el){el.classList.add('gone');el.style.pointerEvents='none'}document.body.style.overflow='';ldState='idle'}
-function armCurtain(){if(ldState!=='idle')return;ldState='wait';var cap=root.getAttribute('data-perf')==='low'?800:1400;ldShow=setTimeout(function(){if(ldState!=='wait')return;ldState='on';var el=curtain();if(el){el.classList.remove('gone','out');el.style.pointerEvents='auto'}ldMax=setTimeout(hideCurtain,cap)},150)}
-document.addEventListener('astro:before-preparation',armCurtain);
-/* The home page builds its canvases once per document. Coming back to it through the router would leave the wire
-   and the other home effects dead, so that one trip is a normal page load (same as before the router). */
-document.addEventListener('astro:before-preparation',function(e){
-  if(!window.__avHome||e.to.pathname!=='/'||e.from.pathname==='/')return;
-  var href=e.to.href,back=e.navigationType==='traverse';
-  e.loader=function(){try{sessionStorage.setItem('av-nav','1')}catch(x){}if(back)location.replace(href);else location.assign(href);return new Promise(function(){})};
-});
-var navs=0;
-document.addEventListener('astro:page-load',function(){if(!navs++)return;hideCurtain();document.body.classList.add('ready');var bd=$('#brand');if(bd)bd.classList.remove('wait');$$('.btn[data-label]').forEach(twist);bindTog();if(!location.hash)scrollTo(0,0);var h=document.querySelector('h1');if(h){if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true})}catch(err){}}});
+    if(t<D+.08)requestAnimationFrame(f);else{location.href=h;leaveT=setTimeout(function(){if(!document.hidden)AV.lift(hideCurtain);else hideCurtain()},6000)}})(t0)}
 addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
 
 /* ---------- molecular background (follows the cursor, very faint) ---------- */
@@ -335,10 +328,7 @@ addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
   function build(){dpr=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;P=[];
     for(var y=-GAP;y<H+GAP;y+=GAP)for(var xx=-GAP;xx<W+GAP;xx+=GAP)P.push({bx:xx+(Math.random()-.5)*GAP*.9,by:y+(Math.random()-.5)*GAP*.9,x:0,y:0,e:0,ph:Math.random()*6.28,o:Math.random()<.07,r:.8+Math.random()*1.2})}
   function cols(){cF=hex(tok('--fg'));cA=hex(tok('--acc'))}
-  build();cols();addEventListener('resize',build);themeHooks.push(cols);
-  /* a page swap brings a fresh #bgfx canvas, so draw into that one from now on */
-  document.addEventListener('astro:after-swap',function(){var n=$('#bgfx');if(!n)return;cv=n;x=cv.getContext('2d');build();cols();clean=true});
-  function rgba(c,a){return 'rgba('+(c[0]*255|0)+','+(c[1]*255|0)+','+(c[2]*255|0)+','+a.toFixed(3)+')'}
+  build();cols();addEventListener('resize',build);themeHooks.push(cols);  function rgba(c,a){return 'rgba('+(c[0]*255|0)+','+(c[1]*255|0)+','+(c[2]*255|0)+','+a.toFixed(3)+')'}
   var idle=0;loops.push(function(now){var t=now/1000,mx=AV.mx,my=AV.my,mv=Math.hypot(mx-lmx,my-lmy);lmx=mx;lmy=my;E=lerp(E,clamp(mv/18,0,1),.08);if(mv<.5&&clean){if(++idle>2)return}else idle=0;
     var act=[],any=false,dk=isDark(),base=dk?.34:.22;
     for(var i=0;i<P.length;i++){var p=P[i];p.x=p.bx+Math.sin(t*.5+p.ph)*5;p.y=p.by+Math.cos(t*.45+p.ph)*5;
@@ -364,7 +354,8 @@ addEventListener('pageshow',function(e){if(e.persisted)hideCurtain()});
   function upd(){var d=m(),tr=sb.clientHeight;if(d.h<=d.v+2){sb.style.display='none';return}sb.style.display='';var h=Math.max(36,tr*d.v/d.h),y=(tr-h)*d.y/(d.h-d.v);th.style.setProperty('--h',h+'px');th.style.setProperty('--y',y+'px')}
   function show(){sb.classList.add('on');clearTimeout(hideT);hideT=setTimeout(function(){sb.classList.remove('on')},1200)}
   function onS(){upd();show()}
-  addEventListener('scroll',function(){if(!tgt)onS()},{passive:true});addEventListener('resize',upd);setTimeout(upd,500);if(window.ResizeObserver)new ResizeObserver(upd).observe(B);
+  var uq=0;function req(){if(!uq)uq=requestAnimationFrame(function(){uq=0;upd()})}
+  addEventListener('scroll',function(){if(!tgt)onS()},{passive:true});addEventListener('resize',req);setTimeout(req,500);if(window.ResizeObserver)new ResizeObserver(req).observe(B);
   AV.scrollbarFor=function(el){if(tgt)tgt.removeEventListener('scroll',onS);tgt=el||null;if(tgt)tgt.addEventListener('scroll',onS,{passive:true});upd();if(tgt)show()};
   sb.addEventListener('pointerdown',function(e){e.preventDefault();var r=sb.getBoundingClientRect(),d=m(),h=parseFloat(th.style.getPropertyValue('--h'))||40;
     var ty=parseFloat(th.style.getPropertyValue('--y'))||0;if(e.clientY<r.top+ty||e.clientY>r.top+ty+h){to((e.clientY-r.top-h/2)/(r.height-h)*(d.h-d.v))}
@@ -409,7 +400,9 @@ AV.liquify=function(host,src){
 
 /* ---------- footer: water drops that merge into the logo ---------- */
 (function(){
-  var wrap=$('.drops');if(!wrap)return;var cv=$('canvas',wrap),gl=null;try{gl=cv.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:true})}catch(e){}
+  var wrap=$('.drops');if(!wrap)return;
+  /* the footer is far below the fold, so its shader compile and textures wait until after the splash */
+  AV.later(function(){var cv=$('canvas',wrap),gl=null;try{gl=cv.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:true})}catch(e){}
   if(!gl||RM){wrap.classList.add('nogl');return}
   var N=34,vs='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
   var fs=['precision highp float;uniform vec2 uR;uniform vec3 uD['+N+'];uniform sampler2D uL,uS;uniform float uK,uInk,uNs,uDk;uniform vec3 uBg,uFg;',
@@ -465,6 +458,7 @@ AV.liquify=function(host,src){
       D[i*3]=x+Math.sin(T*.9+d.ph)*wan;D[i*3+1]=y+Math.cos(T*.8+d.ph*1.3)*wan;D[i*3+2]=d.r*wob*shrink}
     gl.uniform2f(U.uR,W,H);gl.uniform3fv(U.uD,D);gl.uniform1f(U.uK,k);gl.uniform1f(U.uInk,ink);gl.uniform1i(U.uL,0);gl.uniform1i(U.uS,1);
     gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLES,0,3)});
+  },3000);
 })();
 
 /* ---------- dark CTA band: a live voice wave plus the molecule net ----------
@@ -554,16 +548,18 @@ if(pars.length)loops.push(function(){if(!AV.sd)return;pars.forEach(function(el){
 
 /* ---------- main loop + start ---------- */
 var lastT=performance.now(),lsy=-1,lsw=0,lsh=0,lsv=-1,lnk=0;
+/* while the loader fully covers the page, only the cursor and magnet loops (the first two) run */
+var covered=!!L&&!L.classList.contains('gone');
 /* AV.sd is true on frames where the scroll position, viewport or layout changed.
    Loops that only depend on scroll position return early when it is false. */
 function loop(now){var dt=Math.min((now-lastT)/1000,.05);lastT=now;
   var sy=scrollY;AV.sd=sy!==lsy||innerWidth!==lsw||innerHeight!==lsh||LV!==lsv||nearKick!==lnk;lnk=nearKick;lsy=sy;lsw=innerWidth;lsh=innerHeight;lsv=LV;
-  for(var i=0,n=(AV.paused||document.hidden)?2:loops.length;i<n;i++){try{loops[i](now,dt)}catch(e){console.warn(e);loops.splice(i,1);i--}}requestAnimationFrame(loop)}
+  for(var i=0,n=(AV.paused||document.hidden||covered)?2:loops.length;i<n;i++){try{loops[i](now,dt)}catch(e){console.warn(e);loops.splice(i,1);i--}}requestAnimationFrame(loop)}
 var started=false;
 AV.start=function(){
   if(started){B.classList.add('ready');return}started=true;
   requestAnimationFrame(loop);onScroll();
-  var booted=false;function done(){if(booted)return;booted=true;AV.booted=true;B.classList.add('ready');readyFns.forEach(function(f){try{f()}catch(e){console.warn(e)}})}
+  var booted=false;function done(){if(booted)return;booted=true;AV.booted=true;covered=false;B.classList.add('ready');readyFns.forEach(function(f){try{f()}catch(e){console.warn(e)}})}
   var intro=AV.intro||(cameFromSite?particleIntro:fullIntro);try{intro(done)}catch(e){console.warn(e);if(L)L.classList.add('gone');done()}
   setTimeout(function(){if(!booted){if(L)L.classList.add('gone');done()}},9000);
 };

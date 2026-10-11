@@ -113,9 +113,6 @@ var tries=0,lowBoot=document.documentElement.getAttribute('data-perf')==='low';
 function loadThree(){import('three').then(function(m){THREE=m;bootCord()},function(e){console.warn(e);if(++tries<3)setTimeout(loadThree,1500*tries)})}
 /* start as soon as the browser is idle instead of waiting for the window load event (images, fonts) */
 if('requestIdleCallback' in window)requestIdleCallback(loadThree,{timeout:lowBoot?2500:900});else setTimeout(loadThree,lowBoot?1200:250);
-document.addEventListener('astro:before-swap',function(){if(cord){cord.dispose();cord=null}},{once:true});
-window.__avHome=true;
-
 /* hero chips live data */
 (function(){
   var sp=$('#spark'),h='';for(var i=0;i<14;i++)h+='<i style="--h:'+(25+Math.random()*75).toFixed(0)+'%"'+(i===9?' class="o"':'')+'></i>';sp.innerHTML=h;
@@ -293,8 +290,11 @@ addEventListener('keydown',function(e){if(e.key==='Escape'){if(openKey)closePane
   $$('.odo').forEach(function(o,k){var v=o.getAttribute('data-v'),s=o.getAttribute('data-s'),h='';
     v.split('').forEach(function(d,i){var c='';for(var r=0;r<3;r++)for(var n=0;n<10;n++)c+='<span>'+n+'</span>';h+='<span class="col" data-d="'+d+'" style="--dl:'+(k*.12+i*.15)+'s">'+c+'</span>'});
     o.innerHTML=h+'<small>'+s+'</small>';o.setAttribute('aria-label',v+s)});
-  function widths(){$$('.odo').forEach(function(o){var fs=parseFloat(getComputedStyle(o).fontSize);$$('.col',o).forEach(function(c){var m=document.createElement('span');m.style.cssText='position:absolute;visibility:hidden';m.textContent=c.getAttribute('data-d');o.appendChild(m);c.style.width=(m.getBoundingClientRect().width/fs+.02).toFixed(3)+'em';m.remove()})})}
-  widths();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(widths);
+  /* batched: add every probe, read every width, then write, so the layout is computed once */
+  function widths(){var jobs=[];$$('.odo').forEach(function(o){$$('.col',o).forEach(function(c){var m=document.createElement('span');m.style.cssText='position:absolute;visibility:hidden';m.textContent=c.getAttribute('data-d');o.appendChild(m);jobs.push([o,c,m])})});
+    var w=jobs.map(function(j){return [j[2].getBoundingClientRect().width,parseFloat(getComputedStyle(j[0]).fontSize)]});
+    jobs.forEach(function(j,i){j[1].style.width=(w[i][0]/w[i][1]+.02).toFixed(3)+'em';j[2].remove()})}
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){AV.ready(widths)});else AV.ready(widths);
   new IntersectionObserver(function(e,ob){if(e[0].isIntersecting){$$('.odo .col').forEach(function(c){c.style.transform='translateY(-'+((20+ +c.getAttribute('data-d'))*1.12)+'em)'});ob.disconnect()}},{threshold:.35}).observe($('#stats'));
 })();
 

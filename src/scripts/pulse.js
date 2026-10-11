@@ -3,7 +3,7 @@
    keyboard focus, and resumes afterwards. Nav, dock, footer and LinkedIn buttons are not included. */
 (function () {
   var EVERY = 4000;      /* gap between pulses of one button */
-  var HOLD = 900;        /* how long the hover state is held (the same animation as a real hover) */
+  var HOLD = 680;        /* the 0.6 s flip lands on orange and turns straight back, with almost no pause */
   var FIRST = 2500;      /* first pulse after the button becomes visible */
   var GAP = 1600;        /* minimum time between pulses of different buttons */
   var lastPulse = 0;
@@ -12,7 +12,7 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
     if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return true;
     if (document.hidden) return true;
-    if (document.documentElement.getAttribute('data-perf') === 'low') return true;
+    /* the pulse is a quick flip of one button, cheap enough for every performance tier */
     if (window.AV && AV.paused) return true;
     var net = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (net && (net.saveData || net.effectiveType === '2g' || net.effectiveType === 'slow-2g')) return true;
@@ -80,5 +80,4 @@
     list().forEach(arm);
   }
   boot();
-  document.addEventListener('astro:page-load', boot);
 })();

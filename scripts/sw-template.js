@@ -29,7 +29,9 @@ const FONT_HOSTS = new Set(['fonts.googleapis.com', 'fonts.gstatic.com']);
 const ANALYTICS = /(google-analytics|googletagmanager|googleadservices|doubleclick|plausible|segment|hotjar|facebook\.net)/i;
 
 function isStatic(url) {
-  return /\.(?:css|js|mjs|png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf)$/i.test(url.pathname);
+  /* scripts and styles only when their file name is content-hashed; anything else would go stale */
+  if (/\.(?:css|js|mjs)$/i.test(url.pathname)) return url.pathname.startsWith('/_astro/');
+  return /\.(?:png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf)$/i.test(url.pathname);
 }
 
 async function trim(cache) {
