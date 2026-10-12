@@ -63,6 +63,7 @@ URLs have no `.html` and no trailing slash. Old paths (`/about`, `/privacy-polic
   - liquid WebGL product cards
   - water drops in the footer that merge into the logo
 - **Twist buttons.** Key CTAs spin through an orange face in about 100 ms. The hero, pilot and closing CTAs replay it every 4 s to draw the eye.
+- **Right-click menu.** A custom, keyboard-friendly menu (back, reload, copy address, save, print, fullscreen, plus link, image and selected-text actions). Shift + right-click opens the browser menu; inputs keep it too.
 - **Light and dark.** The theme is saved per browser. The favicon follows the OS theme.
 - **Works offline.** A service worker caches the site, and an offline page appears when there is no network.
 
@@ -156,12 +157,14 @@ avishkar-astro/
    │  ├─ art.js             generated product artwork
    │  ├─ onboarding.js      pilot form wizard
    │  ├─ pulse.js           the 4-second CTA attention spin
+   │  ├─ ctxmenu.js        custom right-click menu (GSAP, lazy-loaded)
    │  └─ pwa.js             service worker registration + offline indicator
    └─ styles/
       ├─ base.css           tokens, theme, layout, buttons, loader (shared)
       ├─ home.css           home page sections
       ├─ pages.css          product, journey, pilot and legal pages
       ├─ pwa.css            offline UI + low-tier rules
+      ├─ ctxmenu.css        right-click menu styles
       └─ tailwind.css       utilities only (no Preflight)
 ```
 
